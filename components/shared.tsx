@@ -74,7 +74,16 @@ export function Logo({
           <Link2 className="size-6 -rotate-45" strokeWidth={2.5} />
         </span>
       )}
-      {!compact && (
+      {!compact && imageSrc && (
+        <img
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TextBased%20Logo-HFvVOAm291YyQoyHmr0UzKsA8AnwrC.png"
+          alt="JobLinked"
+          width={150}
+          height={50}
+          className="h-auto w-[150px] object-contain"
+        />
+      )}
+      {!compact && !imageSrc && (
         <span
           className={cn(
             "text-[23px] font-bold tracking-[-1px] text-navy",
