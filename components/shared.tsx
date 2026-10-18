@@ -55,9 +55,11 @@ import { cn } from "@/lib/utils";
 export function Logo({
   light = false,
   compact = false,
+  imageSrc,
 }: {
   light?: boolean;
   compact?: boolean;
+  imageSrc?: string;
 }) {
   return (
     <Link
@@ -65,9 +67,13 @@ export function Logo({
       className="inline-flex shrink-0 items-center gap-2.5"
       aria-label="JobLinked home"
     >
-      <span className="flex size-9 items-center justify-center rounded-[10px] bg-primary text-white">
-        <Link2 className="size-6 -rotate-45" strokeWidth={2.5} />
-      </span>
+      {imageSrc ? (
+        <img src={imageSrc} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
+      ) : (
+        <span className="flex size-9 items-center justify-center rounded-[10px] bg-primary text-white">
+          <Link2 className="size-6 -rotate-45" strokeWidth={2.5} />
+        </span>
+      )}
       {!compact && (
         <span
           className={cn(
