@@ -1,4 +1,5 @@
 "use client";
+import { hasPermission } from "@/lib/permissions";
 
 import { useState } from "react";
 import useSWR from "swr";
@@ -59,7 +60,7 @@ export function LaborMarketReports() {
     error,
     isLoading,
   } = useSWR(
-    user?.role === "admin" && valid
+    hasPermission(state, user, "reports") && valid
       ? ["joblinked-report", from, to, state.revision]
       : null,
     () => api.getReport(from, to),

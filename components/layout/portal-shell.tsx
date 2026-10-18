@@ -59,6 +59,7 @@ import { useAction } from "@/hooks/use-action";
 import { initials, isJobOpen } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/types";
+import { portalRole, canOpenSection } from "@/lib/permissions";
 
 export function PortalShell({
   role,
@@ -87,7 +88,12 @@ export function PortalShell({
         <Skeleton className="mt-8 h-96" />
       </main>
     );
-  if (!user || !user.active || user.role !== role)
+  if (
+    !user ||
+    !user.active ||
+    portalRole(user.role) !== role ||
+    !canOpenSection(state, user, pathname.split("/")[2] || "dashboard")
+  )
     return (
       <PublicShell>
         <div className="page-container py-16">
@@ -104,7 +110,9 @@ export function PortalShell({
               <div className="flex flex-wrap items-center justify-center gap-5">
                 <LinkButton
                   href={
-                    user && user.active ? `/${user.role}/dashboard` : "/login"
+                    user && user.active
+                      ? `/${portalRole(user.role)}/dashboard`
+                      : "/login"
                   }
                 >
                   {user && user.active ? "Open my portal" : "Go to demo login"}
@@ -116,7 +124,9 @@ export function PortalShell({
         </div>
       </PublicShell>
     );
-  const navigation = PORTAL_NAV[role];
+  const navigation = PORTAL_NAV[role].filter((n) =>
+    canOpenSection(state, user, n.path),
+  );
   const activePath = pathname.split("/")[2] || "dashboard";
   const label =
     navigation.find((n) => n.path === activePath)?.label ?? "Workspace";
@@ -138,7 +148,7 @@ export function PortalShell({
           ) : (
             <>
               <span className="size-1.5 rounded-full bg-teal" />
-              {ROLE_LABELS[role]} workspace
+              {ROLE_LABELS[user.role]} workspace
             </>
           )}
         </Badge>
@@ -349,7 +359,7 @@ export function PortalShell({
                     {user.name}
                   </span>
                   <span className="mt-0.5 block text-[9px] text-muted-foreground">
-                    {ROLE_LABELS[role]}
+                    {ROLE_LABELS[user.role]}
                   </span>
                 </span>
                 <ChevronDown className="hidden sm:block" />

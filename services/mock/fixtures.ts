@@ -407,8 +407,46 @@ const applications: JobApplication[] = applicationSeeds.map((a, i) => {
   };
 });
 
+import { DEFAULT_PERMISSIONS } from "@/lib/permissions";
+
 export function createInitialState(): DemoState {
   return structuredClone({
+    employmentRecords: applications
+      .filter((a) => a.status === "Hired")
+      .map((a) => {
+        const job = jobs.find((j) => j.id === a.jobId)!;
+        const date =
+          a.timeline.find((e) => e.status === "Hired")?.date ?? a.submittedAt;
+        return {
+          id: `employee-${a.id}`,
+          applicationId: a.id,
+          seekerId: a.seekerId,
+          employerId: job.employerId,
+          position: job.title,
+          department: "Not yet specified",
+          hiredAt: date,
+          startDate: null,
+          endDate: null,
+          classification: job.type,
+          status: "Hired — Pending Start" as const,
+          updatedAt: date,
+          assignedStaffIds: [],
+          history: [
+            {
+              id: `hire-${a.id}`,
+              status: "Hired — Pending Start" as const,
+              effectiveDate: date.slice(0, 10),
+              recordedAt: date,
+              actorId: companies.find((c) => c.id === job.employerId)!.userId,
+              remarks:
+                "Hiring confirmed through the recorded application event.",
+            },
+          ],
+        };
+      }),
+    correctionRequests: [],
+    roleChangeLogs: [],
+    permissionMatrix: DEFAULT_PERMISSIONS,
     users: [
       ...seekers.map(({ id, name, email, role, active, createdAt }) => ({
         id,
@@ -426,6 +464,14 @@ export function createInitialState(): DemoState {
         active: true,
         createdAt: day(-35),
       })),
+      {
+        id: "staff-1",
+        name: "Elena Santos",
+        email: "staff@demo.joblinked.ph",
+        role: "staff" as const,
+        active: true,
+        createdAt: day(-30),
+      },
       {
         id: "admin-1",
         name: "Gabriel Mendoza",

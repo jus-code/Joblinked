@@ -21,10 +21,12 @@ import {
 } from "@/components/shared";
 import { EmploymentActivityChart } from "@/components/dashboard/employment-charts";
 import { useDemo } from "@/hooks/use-demo";
+import { EmploymentTracking } from "@/components/tracking/employment-tracking";
 import { formatDate, isJobOpen } from "@/lib/format";
 
 export function AdminDashboard() {
   const { state, user } = useDemo();
+  if (user?.role === "staff") return <EmploymentTracking mode="admin" />;
   const pending = state.accreditations.filter(
     (a) => a.status === "Pending Review",
   );

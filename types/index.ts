@@ -10,11 +10,80 @@ export type ApplicationStatus =
   | "Rejected";
 export type JobStatus =
   "Draft" | "Published" | "Closed" | "Flagged" | "Removed";
+export type UserRole = Role | "staff";
+export type Permission =
+  | "browse"
+  | "apply"
+  | "jobs"
+  | "employees"
+  | "accreditation"
+  | "reports"
+  | "roles";
+export type PermissionScope = "none" | "own" | "company" | "all" | "assigned";
+export type PermissionMatrix = Record<
+  UserRole,
+  Record<Permission, PermissionScope>
+>;
+export type EmploymentStatus =
+  | "Hired — Pending Start"
+  | "Active"
+  | "Probationary"
+  | "Regular"
+  | "Contractual"
+  | "Resigned"
+  | "Terminated"
+  | "Contract Completed";
+export interface EmploymentStatusHistory {
+  id: string;
+  status: EmploymentStatus;
+  effectiveDate: string;
+  recordedAt: string;
+  actorId: string;
+  remarks: string;
+}
+export interface EmployeeTrackingRecord {
+  id: string;
+  applicationId: string;
+  seekerId: string;
+  employerId: string;
+  position: string;
+  department: string;
+  hiredAt: string;
+  startDate: string | null;
+  endDate: string | null;
+  classification: string;
+  status: EmploymentStatus;
+  updatedAt: string;
+  history: EmploymentStatusHistory[];
+  assignedStaffIds: string[];
+}
+export interface EmploymentCorrectionRequest {
+  id: string;
+  employmentId: string;
+  seekerId: string;
+  message: string;
+  createdAt: string;
+  status: "Pending" | "Reviewed";
+  resolution?: string;
+  reviewedBy?: string;
+}
+export interface RoleChangeAuditLog {
+  id: string;
+  userId: string;
+  previousRole: UserRole;
+  newRole: UserRole;
+  administratorId: string;
+  timestamp: string;
+  reason: string;
+  previousActive: boolean;
+  newActive: boolean;
+}
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: Role;
+  role: UserRole;
+  updatedAt?: string;
   active: boolean;
   createdAt: string;
 }
@@ -153,6 +222,10 @@ export interface SystemPreferences {
   termsText: string;
 }
 export interface DemoState {
+  employmentRecords: EmployeeTrackingRecord[];
+  correctionRequests: EmploymentCorrectionRequest[];
+  roleChangeLogs: RoleChangeAuditLog[];
+  permissionMatrix: PermissionMatrix;
   users: User[];
   seekers: JobSeeker[];
   employers: Employer[];

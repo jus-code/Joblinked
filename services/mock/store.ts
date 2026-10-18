@@ -1,6 +1,7 @@
 import { mutate } from "swr";
 import { DEMO_ACCOUNTS, DEMO_QUERY_KEY, STORAGE_KEY } from "@/constants";
 import { createInitialState } from "./fixtures";
+import { ensureEmployment } from "./tracking";
 import type { DemoState, JobPosting, Role } from "@/types";
 
 let state: DemoState | undefined;
@@ -79,6 +80,8 @@ export function current(): DemoState {
       /* Storage is optional; the demo remains usable in memory. */
     }
   }
+  for (const application of state.applications)
+    if (application.status === "Hired") ensureEmployment(state, application.id);
   return state;
 }
 function persist() {

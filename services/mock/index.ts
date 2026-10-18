@@ -25,6 +25,8 @@ import {
   wait,
 } from "./store";
 import { buildReport } from "./reports";
+import { hasPermission } from "@/lib/permissions";
+import { ensureEmployment, trackingActions } from "./tracking";
 
 type ExtraActions = {
   selectDemoAccount(userId: string): Promise<void>;
@@ -53,7 +55,8 @@ type ExtraActions = {
   updatePreferences(input: Partial<DemoState["preferences"]>): Promise<void>;
 };
 
-export const demoApi: DemoApi & ExtraActions = {
+export const demoApi: DemoApi & ExtraActions & typeof trackingActions = {
+  ...trackingActions,
   async getState() {
     await wait();
     return current();
@@ -463,8 +466,20 @@ export const demoApi: DemoApi & ExtraActions = {
         throw new Error(
           "This application is not associated with your company.",
         );
-      if (status === application.status && !interview)
+      if (status === application.status && !interview) {
+        if (status === "Hired") {
+          ensureEmployment(s, applicationId);
+          return;
+        }
         throw new Error("Choose a different status.");
+      }
+      if (
+        s.employmentRecords.some((r) => r.applicationId === applicationId) &&
+        status !== "Hired"
+      )
+        throw new Error(
+          "This applicant is already hired. Update their employment record instead.",
+        );
       if (
         status === "Interview Scheduled" &&
         (!interview?.date ||
@@ -474,6 +489,10 @@ export const demoApi: DemoApi & ExtraActions = {
       )
         throw new Error(
           "Provide a future interview date and a location or meeting link.",
+        );
+      if (status === "Hired" && company.accreditationStatus !== "Approved")
+        throw new Error(
+          "Company verification is required before confirming a hire.",
         );
       application.status = status;
       if (interview) application.interview = interview;
@@ -493,6 +512,7 @@ export const demoApi: DemoApi & ExtraActions = {
         `/jobseeker/applications/${applicationId}`,
         status === "Interview Scheduled" ? "interview" : "application",
       );
+      if (status === "Hired") ensureEmployment(s, applicationId);
       audit(s, `Updated application to ${status}`, job.title);
     });
   },
@@ -520,7 +540,12 @@ export const demoApi: DemoApi & ExtraActions = {
   },
   async reviewAccreditation(employerId, status: AccreditationStatus, reason) {
     await commit((s) => {
-      const actor = requireUser(s, "admin");
+      const actor = requireUser(s);
+      if (
+        !["admin", "staff"].includes(actor.role) ||
+        !hasPermission(s, actor, "accreditation")
+      )
+        throw new Error("Accreditation review permission required.");
       const company = s.employers.find((e) => e.id === employerId);
       const accreditation = s.accreditations.find(
         (a) => a.employerId === employerId,
@@ -646,6 +671,27 @@ export const demoApi: DemoApi & ExtraActions = {
         throw new Error("You cannot suspend your own administrator account.");
       const target = s.users.find((u) => u.id === userId);
       if (!target) throw new Error("User not found.");
+      if (
+        target.role === "admin" &&
+        target.active &&
+        !active &&
+        s.users.filter((u) => u.role === "admin" && u.active).length <= 1
+      )
+        throw new Error("The last active administrator must be retained.");
+      s.roleChangeLogs.unshift({
+        id: makeId("access-audit"),
+        userId,
+        previousRole: target.role,
+        newRole: target.role,
+        administratorId: actor.id,
+        timestamp: now(),
+        reason: active
+          ? "Account reactivated from User Management"
+          : "Account suspended from User Management",
+        previousActive: target.active,
+        newActive: active,
+      });
+      target.updatedAt = now();
       target.active = active;
       const profile = s.seekers.find((p) => p.id === userId);
       if (profile) profile.active = active;
@@ -726,7 +772,12 @@ export const demoApi: DemoApi & ExtraActions = {
   async getReport(from, to) {
     await wait();
     const s = current();
-    requireUser(s, "admin");
+    const actor = requireUser(s);
+    if (
+      !["admin", "staff"].includes(actor.role) ||
+      !hasPermission(s, actor, "reports")
+    )
+      throw new Error("PESO reporting permission required.");
     if (
       !/^\d{4}-\d{2}-\d{2}$/.test(from) ||
       !/^\d{4}-\d{2}-\d{2}$/.test(to) ||
