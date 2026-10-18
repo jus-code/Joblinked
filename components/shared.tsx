@@ -56,10 +56,12 @@ export function Logo({
   light = false,
   compact = false,
   imageSrc,
+  wordmarkSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TextBased%20Logo-HFvVOAm291YyQoyHmr0UzKsA8AnwrC.png",
 }: {
   light?: boolean;
   compact?: boolean;
   imageSrc?: string;
+  wordmarkSrc?: string;
 }) {
   return (
     <Link
@@ -76,7 +78,7 @@ export function Logo({
       )}
       {!compact && imageSrc && (
         <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TextBased%20Logo-HFvVOAm291YyQoyHmr0UzKsA8AnwrC.png"
+          src={wordmarkSrc}
           alt="JobLinked"
           width={150}
           height={50}
