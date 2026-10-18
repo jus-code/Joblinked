@@ -301,21 +301,32 @@ function RecruitmentStatusForm({
   const { api } = useDemo();
   const { run, pending } = useAction();
   const [status, setStatus] = useState<ApplicationStatus>(application.status);
-  const [date, setDate] = useState("");
   const [location, setLocation] = useState(
     application.interview?.location ?? "",
   );
   const [error, setError] = useState("");
-  const submit = async (event: React.FormEvent) => {
+  const defaultInterviewDate = application.interview
+    ? new Intl.DateTimeFormat("sv-SE", {
+        timeZone: "Asia/Manila",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(new Date(application.interview.date)).replace(" ", "T")
+    : "";
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const date = String(new FormData(event.currentTarget).get("interviewDate") ?? "");
     const interview =
       status === "Interview Scheduled"
-        ? { date: date ? `${date}:00+08:00` : "", location: location.trim() }
+        ? { date: date ? `${date}+08:00` : "", location: location.trim() }
         : undefined;
     if (
       interview &&
-      (!interview.date ||
-        new Date(interview.date) <= new Date() ||
+      (!Number.isFinite(Date.parse(interview.date)) ||
+        Date.parse(interview.date) <= Date.now() ||
         interview.location.length < 3)
     ) {
       setError(
@@ -351,9 +362,10 @@ function RecruitmentStatusForm({
               <TextField
                 label="Interview date & time (Philippine time)"
                 type="datetime-local"
+                name="interviewDate"
                 required
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                step={60}
+                defaultValue={defaultInterviewDate}
               />
               <TextField
                 label="Location or meeting link"

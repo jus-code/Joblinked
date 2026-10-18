@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={geist.variable}>
+    <html lang="en" className={geist.variable} data-scroll-behavior="smooth">
       <body className="antialiased">
         <a href="#main-content" className="fixed -top-20 left-4 z-50 rounded-lg bg-primary px-5 py-3 text-white focus:top-4">Skip to content</a>
         <Providers>{children}</Providers>

@@ -468,8 +468,9 @@ export const demoApi: DemoApi & ExtraActions = {
       if (
         status === "Interview Scheduled" &&
         (!interview?.date ||
-          !interview.location.trim() ||
-          new Date(interview.date) <= new Date())
+          !Number.isFinite(Date.parse(interview.date)) ||
+          interview.location.trim().length < 3 ||
+          Date.parse(interview.date) <= Date.now())
       )
         throw new Error(
           "Provide a future interview date and a location or meeting link.",
