@@ -9,23 +9,7 @@ export const metadata: Metadata = {
   title: { default: 'JobLinked — Local Talent. Local Opportunities.', template: '%s | JobLinked' },
   description: 'Discover local job opportunities, connect with verified sample employers, and track applications in Santa Maria, Bulacan. An independent frontend demonstration, not an official LGU service.',
   generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
+  icons: { icon: { url: '/icon.svg', type: 'image/svg+xml' } },
 }
 
 export const viewport: Viewport = {
