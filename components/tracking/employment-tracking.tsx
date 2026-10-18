@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { JOB_TYPES } from "@/constants";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -199,7 +200,7 @@ export function EmploymentTracking({
             label="Employment type"
             placeholder="All types"
             value={classification}
-            options={[...new Set(records.map((r) => r.classification))]}
+            options={[...new Set([...JOB_TYPES, ...records.map((r) => r.classification)])]}
             onChange={(e) => setClassification(e.target.value)}
           />
         </div>

@@ -1,7 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   Dialog,
   DialogContent,
@@ -20,225 +21,348 @@ import {
 import {
   PageHeading,
   Panel,
-  SelectField,
-  StatusBadge,
-  ConfirmButton,
+  Notice,
   EmptyState,
+  SelectField,
+  TextField,
+  StatusBadge,
 } from "@/components/shared";
-import {
-  SearchInput,
-  ListPagination,
-  PAGE_SIZE,
-} from "@/components/dashboard/list-controls";
+import { SearchInput } from "@/components/dashboard/list-controls";
 import { useDemo } from "@/hooks/use-demo";
 import { useAction } from "@/hooks/use-action";
+import { hasPermission, PERMISSIONS, USER_ROLES } from "@/lib/permissions";
 import { ROLE_LABELS } from "@/constants";
 import { formatDate } from "@/lib/format";
-
+import type { Permission, UserRole } from "@/types";
 export function UserManagement() {
   const { state, user, api } = useDemo();
-  const { run } = useAction();
+  const { run, pending } = useAction();
   const [query, setQuery] = useState("");
-  const [role, setRole] = useState("");
-  const [status, setStatus] = useState("");
-  const [selected, setSelected] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("");
+  const [access, setAccess] = useState("");
+  const [selected, setSelected] = useState("");
+  const [role, setRole] = useState<UserRole>("jobseeker");
+  const [active, setActive] = useState(true);
+  const [reason, setReason] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [permission, setPermission] = useState<Permission | null>(null);
+  if (!user || user.role !== "admin" || !hasPermission(state, user, "roles"))
+    return (
+      <EmptyState
+        title="Administrator permission required"
+        description="Only authorized PESO administrators may manage roles and account access."
+      />
+    );
+  const target = state.users.find((u) => u.id === selected);
   const records = state.users.filter(
     (u) =>
-      (!role || u.role === role) &&
-      (!status || u.active === (status === "Active")) &&
-      `${u.name} ${u.email} ${state.employers.find((e) => e.userId === u.id)?.name ?? ""}`
+      `${u.id} ${u.name} ${u.email}`
         .toLowerCase()
-        .includes(query.toLowerCase()),
+        .includes(query.toLowerCase()) &&
+      (!filter || u.role === filter) &&
+      (!access || u.active === (access === "Active")),
   );
-  const currentPage = Math.min(
-    page,
-    Math.max(1, Math.ceil(records.length / PAGE_SIZE)),
-  );
-  const target = state.users.find((u) => u.id === selected);
-  const seeker = state.seekers.find((s) => s.id === selected);
-  const company = state.employers.find((e) => e.userId === selected);
+  const stats = [
+    ["Total system users", state.users.length],
+    ["Job seekers", state.users.filter((u) => u.role === "jobseeker").length],
+    ["Employers", state.users.filter((u) => u.role === "employer").length],
+    [
+      "PESO administrators",
+      state.users.filter((u) => u.role === "admin").length,
+    ],
+    ["Active accounts", state.users.filter((u) => u.active).length],
+    ["Suspended accounts", state.users.filter((u) => !u.active).length],
+  ];
   return (
     <>
       <PageHeading
-        eyebrow="Support the people behind the profiles"
-        title="A community of possibilities."
-        description="Search sample accounts, inspect permitted details, and manage demo account access."
+        eyebrow="Accountable access. Clear responsibilities."
+        title="User Management"
+        description="Find registered users, assign their system roles, and manage account access."
       />
+      <Notice title="Frontend authorization preview">
+        Role checks are enforced by shared mock services for this session, not a
+        secure backend. Production must validate JWT sessions, permissions,
+        tenant scope, and audit writes server-side.
+      </Notice>
+      <div className="my-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {stats.map(([label, count]) => (
+          <Panel key={label} title={String(label)}>
+            <p className="text-2xl font-semibold text-navy">{count}</p>
+          </Panel>
+        ))}
+      </div>
       <Panel
-        title="Registered accounts"
-        description="PESO administrator accounts are provisioned, never publicly self-registered."
+        title="System users"
+        description="Your own elevated permissions cannot be modified. Job seeker and employer roles require an existing matching profile."
       >
-        <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-end">
+        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <SearchInput
             value={query}
-            onChange={(v) => {
-              setQuery(v);
-              setPage(1);
-            }}
-            placeholder="Search name, email, or company…"
+            onChange={setQuery}
+            placeholder="Search user ID, name, or email…"
           />
-          <div className="grid gap-3 sm:grid-cols-2">
-            <SelectField
-              label="Account role"
-              placeholder="All roles"
-              value={role}
-              options={Object.entries(ROLE_LABELS).map(([value, label]) => ({
-                value,
-                label,
-              }))}
-              onChange={(e) => {
-                setRole(e.target.value);
-                setPage(1);
-              }}
-            />
-            <SelectField
-              label="Account access"
-              placeholder="All account states"
-              value={status}
-              options={["Active", "Suspended"]}
-              onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(1);
-              }}
-            />
-          </div>
+          <SelectField
+            label="Assigned role"
+            value={filter}
+            placeholder="All roles"
+            options={USER_ROLES.map((value) => ({
+              value,
+              label: ROLE_LABELS[value],
+            }))}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <SelectField
+            label="Account status"
+            value={access}
+            placeholder="All accounts"
+            options={["Active", "Suspended"]}
+            onChange={(e) => setAccess(e.target.value)}
+          />
         </div>
         {records.length ? (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Account</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Registered</TableHead>
-                <TableHead>Access</TableHead>
-                <TableHead>Actions</TableHead>
+                {[
+                  "User ID",
+                  "Full name",
+                  "Email address",
+                  "Assigned role",
+                  "Account status",
+                  "Registered",
+                  "Last updated",
+                  "Actions",
+                ].map((h) => (
+                  <TableHead key={h}>{h}</TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {records
-                .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-                .map((record) => (
-                  <TableRow key={record.id}>
-                    <TableCell>
-                      <p className="font-medium text-navy">{record.name}</p>
-                      <p className="mt-1 text-[11px] text-muted-foreground">
-                        {record.email}
-                      </p>
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap">
-                      {ROLE_LABELS[record.role]}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap">
-                      {formatDate(record.createdAt)}
-                    </TableCell>
-                    <TableCell>
-                      <StatusBadge
-                        status={record.active ? "Active" : "Suspended"}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          aria-label={`View ${record.name}`}
-                          onClick={() => setSelected(record.id)}
-                        >
-                          Details
-                        </Button>
-                        {record.id !== user?.id && (
-                          <ConfirmButton
-                            variant="ghost"
-                            title={`${record.active ? "Suspend" : "Reactivate"} this sample account?`}
-                            description={
-                              record.active
-                                ? "This account will no longer be able to use its demo workspace until a PESO administrator reactivates it."
-                                : "This sample account will regain access to its role workspace."
-                            }
-                            onConfirm={() =>
-                              run(
-                                () =>
-                                  api.setUserActive(record.id, !record.active),
-                                `Sample account ${record.active ? "suspended" : "reactivated"}.`,
-                              )
-                            }
-                          >
-                            {record.active ? "Suspend" : "Reactivate"}
-                          </ConfirmButton>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {records.map((u) => (
+                <TableRow key={u.id}>
+                  <TableCell className="max-w-36 truncate" title={u.id}>
+                    {u.id}
+                  </TableCell>
+                  <TableCell>{u.name}</TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>{ROLE_LABELS[u.role]}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={u.active ? "Active" : "Suspended"} />
+                  </TableCell>
+                  <TableCell>{formatDate(u.createdAt)}</TableCell>
+                  <TableCell>
+                    {formatDate(u.updatedAt ?? u.createdAt)}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setSelected(u.id);
+                        setRole(u.role);
+                        setActive(u.active);
+                        setReason("");
+                        setConfirmed(false);
+                      }}
+                    >
+                      Manage access
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         ) : (
           <EmptyState
-            title="No sample accounts match."
-            description="Try another search, role, or account state."
+            title="No users found"
+            description="Try a different search or filter."
           />
         )}
-        <ListPagination
-          total={records.length}
-          page={currentPage}
-          onChange={setPage}
-        />
       </Panel>
+      <div className="mt-6">
+        <Panel
+          title="Role and access change history"
+          description="Previous role, new role, responsible administrator, timestamp, and reason are retained."
+        >
+          {state.roleChangeLogs.length ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {[
+                    "User",
+                    "Previous role",
+                    "New role",
+                    "Access",
+                    "Administrator",
+                    "Timestamp",
+                    "Reason",
+                  ].map((h) => (
+                    <TableHead key={h}>{h}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {state.roleChangeLogs.map((log) => (
+                  <TableRow key={log.id}>
+                    <TableCell>
+                      {state.users.find((u) => u.id === log.userId)?.name}
+                    </TableCell>
+                    <TableCell>{ROLE_LABELS[log.previousRole]}</TableCell>
+                    <TableCell>{ROLE_LABELS[log.newRole]}</TableCell>
+                    <TableCell>
+                      {log.previousActive ? "Active" : "Suspended"} →{" "}
+                      {log.newActive ? "Active" : "Suspended"}
+                    </TableCell>
+                    <TableCell>
+                      {
+                        state.users.find((u) => u.id === log.administratorId)
+                          ?.name
+                      }
+                    </TableCell>
+                    <TableCell>
+                      {new Date(log.timestamp).toLocaleString("en-PH")}
+                    </TableCell>
+                    <TableCell className="max-w-64 whitespace-normal break-words">
+                      {log.reason}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <EmptyState
+              title="No access changes yet"
+              description="Confirmed role and account changes will appear here."
+            />
+          )}
+        </Panel>
+      </div>
       <Dialog
-        open={!!target}
+        open={!!target || !!permission}
         onOpenChange={(open) => {
-          if (!open) setSelected(null);
+          if (!open) {
+            setSelected("");
+            setPermission(null);
+          }
         }}
       >
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {permission
+                ? "Configure restricted staff permission"
+                : `Manage ${target?.name}`}
+            </DialogTitle>
+            <DialogDescription>
+              {permission
+                ? "Toggle this scoped permission. This never grants unrestricted administrator access."
+                : "Confirm the role and account state before applying. Every change requires a reason and is audited."}
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              run(async () => {
+                if (permission)
+                  await api.setStaffPermission(
+                    permission,
+                    state.permissionMatrix.staff[permission] === "none",
+                    reason,
+                    confirmed,
+                  );
+                else if (target)
+                  await api.updateAccess(
+                    target.id,
+                    role,
+                    active,
+                    reason,
+                    confirmed,
+                  );
+                setSelected("");
+                setPermission(null);
+              }, "Access configuration updated.");
+            }}
+          >
+            <FieldGroup>
+              {target && (
+                <>
+                  <TextField label="User ID" readOnly value={target.id} />
+                  <SelectField
+                    label="Assigned system role"
+                    value={role}
+                    disabled={target.id === user.id}
+                    options={USER_ROLES.filter(
+                      (r) =>
+                        r === "admin" ||
+                        r === "staff" ||
+                        (r === "jobseeker" &&
+                          state.seekers.some((s) => s.id === target.id)) ||
+                        (r === "employer" &&
+                          state.employers.some((e) => e.userId === target.id)),
+                    ).map((value) => ({ value, label: ROLE_LABELS[value] }))}
+                    onChange={(e) => setRole(e.target.value as UserRole)}
+                  />
+                  <SelectField
+                    label="Account access"
+                    value={active ? "Active" : "Suspended"}
+                    disabled={target.id === user.id}
+                    options={["Active", "Suspended"]}
+                    onChange={(e) => setActive(e.target.value === "Active")}
+                  />
+                </>
+              )}
+              {permission && (
+                <p className="text-sm">
+                  {PERMISSIONS.find((p) => p.key === permission)?.label}:{" "}
+                  {state.permissionMatrix.staff[permission] === "none"
+                    ? "Enable scoped access"
+                    : "Disable staff access"}
+                </p>
+              )}
+              <TextField
+                label="Reason for change"
+                multiline
+                minLength={10}
+                maxLength={2000}
+                required
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+              <Field orientation="horizontal">
+                <Checkbox
+                  id="confirm-access"
+                  checked={confirmed}
+                  onCheckedChange={(v) => setConfirmed(v === true)}
+                />
+                <FieldLabel htmlFor="confirm-access">
+                  I confirm this role or permission change.
+                </FieldLabel>
+              </Field>
+              <Button
+                type="submit"
+                disabled={pending || !confirmed || target?.id === user.id}
+              >
+                Confirm access change
+              </Button>
+            </FieldGroup>
+          </form>
           {target && (
-            <>
-              <DialogHeader>
-                <DialogTitle>{target.name}</DialogTitle>
-                <DialogDescription>
-                  {ROLE_LABELS[target.role]} · Permitted sample account
-                  information
-                </DialogDescription>
-              </DialogHeader>
-              <StatusBadge status={target.active ? "Active" : "Suspended"} />
-              <dl className="grid grid-cols-[100px_1fr] gap-4 text-xs">
-                <dt className="text-muted-foreground">Email</dt>
-                <dd className="break-all">{target.email}</dd>
-                <dt className="text-muted-foreground">Registered</dt>
-                <dd>{formatDate(target.createdAt)}</dd>
-                {seeker && (
-                  <>
-                    <dt className="text-muted-foreground">Barangay</dt>
-                    <dd>{seeker.barangay}</dd>
-                    <dt className="text-muted-foreground">Education</dt>
-                    <dd className="leading-6">
-                      {seeker.education || "Not yet provided"}
-                    </dd>
-                    <dt className="text-muted-foreground">Skills</dt>
-                    <dd className="leading-6">
-                      {seeker.skills.join(", ") || "Not yet provided"}
-                    </dd>
-                  </>
-                )}
-                {company && (
-                  <>
-                    <dt className="text-muted-foreground">Company</dt>
-                    <dd>{company.name}</dd>
-                    <dt className="text-muted-foreground">Barangay</dt>
-                    <dd>{company.barangay}</dd>
-                    <dt className="text-muted-foreground">Accreditation</dt>
-                    <dd>
-                      <StatusBadge status={company.accreditationStatus} />
-                    </dd>
-                  </>
-                )}
-              </dl>
-              <p className="rounded-lg bg-muted p-4 text-[11px] leading-6 text-muted-foreground">
-                No passwords, authentication tokens, private document contents,
-                or unnecessary personal records are available in this view.
-                Production access must be enforced on the server.
-              </p>
-            </>
+            <div className="flex flex-col gap-3">
+              <h3 className="text-sm font-semibold">Account role history</h3>
+              {state.roleChangeLogs
+                .filter((l) => l.userId === target.id)
+                .map((l) => (
+                  <p className="text-xs" key={l.id}>
+                    {ROLE_LABELS[l.previousRole]} → {ROLE_LABELS[l.newRole]} ·{" "}
+                    {formatDate(l.timestamp)} · {l.reason}
+                  </p>
+                ))}
+              {!state.roleChangeLogs.some((l) => l.userId === target.id) && (
+                <p className="text-xs text-muted-foreground">
+                  No recorded changes.
+                </p>
+              )}
+            </div>
           )}
         </DialogContent>
       </Dialog>
