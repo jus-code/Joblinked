@@ -37,10 +37,7 @@ export function ResumeManagement() {
         </Notice>
       </div>
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <Panel
-          title="My sample resumes"
-          description={`${seeker.resumes.length} of 1 resume slot used`}
-        >
+        <Panel title="My sample resumes">
           {seeker.resumes.length ? (
             <ul className="flex flex-col gap-4">
               {seeker.resumes.map((file) => (
