@@ -57,7 +57,7 @@ export function JobSeekerProfile() {
 
 function ProfileForm({ profile }: { profile: JobSeeker }) {
   const { api } = useDemo();
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(profile.profilePicture ?? null);
   const { run, pending } = useAction();
   const form = useForm<ProfileValues>({
     resolver: zodResolver(profileSchema),

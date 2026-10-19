@@ -302,6 +302,10 @@ const seekerNames = [
 const seekers: JobSeeker[] = seekerNames.map((name, i) => ({
   id: `seeker-${i + 1}`,
   name,
+  profilePicture:
+    i === 0
+      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/402fe4473f1b29109259566ee004bf96-774447062-pEYH9kqDabuKqTKjgoXLd2RT4sQqWm.jpg"
+      : undefined,
   email:
     i === 0 ? "maria@demo.joblinked.ph" : `sample${i + 1}@demo.joblinked.ph`,
   role: "jobseeker",

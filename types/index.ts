@@ -97,6 +97,7 @@ export interface FileMetadata {
 }
 export interface JobSeeker extends User {
   role: "jobseeker";
+  profilePicture?: string;
   phone: string;
   barangay: string;
   address: string;
