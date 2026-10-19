@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Save, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ResumeAutofill } from "@/components/forms/resume-autofill";
 import { FieldGroup } from "@/components/ui/field";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -101,6 +102,14 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
           className="flex min-w-0 flex-col gap-6"
           noValidate
         >
+          <ResumeAutofill
+            fields={['name', 'phone', 'headline', 'barangay', 'address', 'education', 'experience', 'skills']}
+            onApply={(details) => {
+              for (const [key, value] of Object.entries(details)) {
+                form.setValue(key as keyof ProfileValues, value, { shouldDirty: true, shouldValidate: true });
+              }
+            }}
+          />
           <Panel
             title="Personal & contact details"
             description="Use fictional information in this frontend demo."
