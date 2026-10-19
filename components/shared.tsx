@@ -54,11 +54,13 @@ import { cn } from "@/lib/utils";
 export function Logo({
   light = false,
   compact = false,
-  imageSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QEsYIe6f2ui4ME4LxPLD0ivdfhP8LW.png",
+  imageSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo-lDM9L9yQL9F0cRDvGXNMeT2vrETT2m.png",
+  wordmarkSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TextBased%20Logo-VbwcOtvFwkjScF5hxpbierATwB6ncj.png",
 }: {
   light?: boolean;
   compact?: boolean;
   imageSrc?: string;
+  wordmarkSrc?: string;
 }) {
   return (
     <Link
@@ -67,11 +69,12 @@ export function Logo({
       aria-label="JobLinked home"
     >
       {compact ? (
-        <span className="flex size-9 shrink-0 overflow-hidden rounded-[10px]" aria-hidden="true">
-          <img src={imageSrc} alt="" width={150} height={43} className="h-[43px] w-[150px] max-w-none object-contain object-left" />
-        </span>
+        <img src={imageSrc} alt="" width={64} height={64} className="size-9 shrink-0 rounded-full object-cover" />
       ) : (
-        <img src={imageSrc} alt="JobLinked" width={211} height={60} className="h-auto w-[150px] object-contain" />
+        <>
+          <img src={imageSrc} alt="JobLinked logo" width={64} height={64} className="size-11 shrink-0 rounded-full object-cover" />
+          <img src={wordmarkSrc} alt="JobLinked" width={211} height={60} className="h-auto w-[150px] object-contain" />
+        </>
       )}
       {!imageSrc && (
         <span
