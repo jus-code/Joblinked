@@ -9,6 +9,7 @@ import {
   EmptyState,
 } from "@/components/shared";
 import { JobCard } from "@/components/jobs/job-card";
+import { PreferenceMatching, preferenceScore } from "@/components/jobs/preference-matching";
 import { SearchInput } from "@/components/dashboard/list-controls";
 import { useDemo } from "@/hooks/use-demo";
 import { isJobOpen, matchJob } from "@/lib/format";
@@ -16,6 +17,7 @@ import { isJobOpen, matchJob } from "@/lib/format";
 export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
   const { state, seeker } = useDemo();
   const [query, setQuery] = useState("");
+  const [matchingPrompt, setMatchingPrompt] = useState("");
   if (!seeker) return null;
   const jobs = state.jobs
     .filter((j) =>
@@ -35,7 +37,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
     .sort((a, b) =>
       saved
         ? b.postedAt.localeCompare(a.postedAt)
-        : matchJob(b, seeker).score - matchJob(a, seeker).score,
+        : (matchingPrompt ? preferenceScore(b, matchingPrompt) - preferenceScore(a, matchingPrompt) : 0) || matchJob(b, seeker).score - matchJob(a, seeker).score,
     );
   return (
     <>
@@ -58,6 +60,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
           </LinkButton>
         }
       />
+      {!saved && <PreferenceMatching prompt={matchingPrompt} onSubmit={setMatchingPrompt} />}
       {!saved && (
         <div className="mb-6">
           <Notice title="A match you can understand">
