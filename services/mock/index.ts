@@ -287,9 +287,9 @@ export const demoApi: DemoApi & ExtraActions & typeof trackingActions = {
     await commit((s) => {
       const actor = requireUser(s, "jobseeker");
       const profile = s.seekers.find((p) => p.id === actor.id)!;
-      if (profile.resumes.length >= 3)
+      if (profile.resumes.length >= 1)
         throw new Error(
-          "Keep up to three sample resumes. Delete one before adding another.",
+          "Only one resume is allowed. Replace or delete your current resume before adding another.",
         );
       profile.resumes.push(file);
     });

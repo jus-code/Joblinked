@@ -52,8 +52,8 @@ export function ResumeAutofill({ onApply, fields, onResume }: {
     <div className="flex items-center gap-2"><FileText className="size-5 text-primary" aria-hidden="true" /><h3 className="text-sm font-semibold">Autofill from your resume</h3></div>
     <Field data-invalid={!!error} data-disabled={busy}>
       <FieldLabel htmlFor={id}>Choose a resume to autofill</FieldLabel>
-      <Input id={id} type="file" accept=".pdf,.docx,.txt" disabled={busy} aria-invalid={!!error} aria-describedby={`${id}-help${error ? ` ${id}-error` : ''}`} onChange={event => { void select(event.target.files?.[0]); event.target.value = '' }} />
-      <FieldDescription id={`${id}-help`}>PDF, DOCX, or TXT · Up to 5 MB. Read locally on your device, never uploaded. Use fictional details in this demo. Text-based resumes work best; scanned images are not supported.</FieldDescription>
+      <Input id={id} type="file" multiple={false} accept=".pdf,.docx,.txt" disabled={busy} aria-invalid={!!error} aria-describedby={`${id}-help${error ? ` ${id}-error` : ''}`} onChange={event => { void select(event.target.files?.[0]); event.target.value = '' }} />
+      <FieldDescription id={`${id}-help`}>One resume only · PDF, DOCX, or TXT · Up to 5 MB. Selecting another file replaces this selection. Read locally on your device, never uploaded. Use fictional details in this demo. Text-based resumes work best; scanned images are not supported.</FieldDescription>
       {error && <FieldError id={`${id}-error`}>{error}</FieldError>}
     </Field>
     <p role="status" className="text-xs text-muted-foreground">{busy && <Loader2 className="mr-2 inline size-4 animate-spin" aria-hidden="true" />}{status}</p>

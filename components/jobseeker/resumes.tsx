@@ -28,7 +28,7 @@ export function ResumeManagement() {
       <PageHeading
         eyebrow="Put your best foot forward"
         title="Your resume, ready to go."
-        description="Keep up to three sample resumes and choose the right one for each opportunity."
+        description="Keep one sample resume. Replace it whenever you need an updated version."
       />
       <div className="mb-6">
         <Notice title="Metadata-only demonstration">
@@ -39,7 +39,7 @@ export function ResumeManagement() {
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
         <Panel
           title="My sample resumes"
-          description={`${seeker.resumes.length} of 3 available slots`}
+          description={`${seeker.resumes.length} of 1 resume slot used`}
         >
           {seeker.resumes.length ? (
             <ul className="flex flex-col gap-4">
@@ -98,7 +98,9 @@ export function ResumeManagement() {
           title={replacing ? "Replace a sample resume" : "Add a sample resume"}
           description="PDF, DOC, or DOCX · Up to 5 MB"
         >
-          <div className="flex flex-col gap-5">
+          {seeker.resumes.length > 0 && !replacing ? (
+            <p className="text-sm text-muted-foreground">Your single resume slot is occupied. Choose Replace on your current resume to upload an updated version.</p>
+          ) : <div className="flex flex-col gap-5">
             <FilePicker
               key={replacing ?? "new"}
               label="Choose a sample resume"
@@ -107,7 +109,7 @@ export function ResumeManagement() {
             />
             <Button
               disabled={
-                !draft || pending || (!replacing && seeker.resumes.length >= 3)
+                !draft || pending || (!replacing && seeker.resumes.length >= 1)
               }
               onClick={() =>
                 run(
@@ -147,7 +149,7 @@ export function ResumeManagement() {
               application. For a production service, upload and access controls
               will be enforced by the backend.
             </p>
-          </div>
+          </div>}
         </Panel>
       </div>
     </>
