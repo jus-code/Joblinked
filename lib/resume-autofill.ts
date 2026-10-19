@@ -55,7 +55,7 @@ export async function readResume(file: File): Promise<string> {
     const pdfjs = await import('pdfjs-dist')
     // Keep the bundled worker and pinned pdfjs-dist version in sync.
     pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker-6.4.299.min.mjs'
-    const task = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false })
+    const task = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) })
     try {
       const document = await task.promise
       if (document.numPages > 20) throw new Error('Use a resume of 20 pages or fewer.')
