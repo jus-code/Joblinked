@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
@@ -76,6 +76,9 @@ export function PortalShell({
   const [mobile, setMobile] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const profilePicture = role === "jobseeker" && user?.name === "Maria Santos"
+    ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/402fe4473f1b29109259566ee004bf96-774447062-pEYH9kqDabuKqTKjgoXLd2RT4sQqWm.jpg"
+    : undefined;
   if (!ready)
     return (
       <main id="main-content" className="min-h-screen bg-muted p-8">
@@ -352,6 +355,7 @@ export function PortalShell({
                 render={<Button variant="ghost" className="gap-2 px-1.5" />}
               >
                 <Avatar>
+                  {profilePicture && <AvatarImage src={profilePicture} alt={`${user.name} profile picture`} />}
                   <AvatarFallback>{initials(user.name)}</AvatarFallback>
                 </Avatar>
                 <span className="hidden text-left sm:block">
