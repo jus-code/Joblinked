@@ -6,7 +6,6 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   CheckCircle2,
-  Link2,
   Search,
   ShieldCheck,
   Loader2,
@@ -55,13 +54,11 @@ import { cn } from "@/lib/utils";
 export function Logo({
   light = false,
   compact = false,
-  imageSrc,
-  wordmarkSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/TextBased%20Logo-HFvVOAm291YyQoyHmr0UzKsA8AnwrC.png",
+  imageSrc = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QEsYIe6f2ui4ME4LxPLD0ivdfhP8LW.png",
 }: {
   light?: boolean;
   compact?: boolean;
   imageSrc?: string;
-  wordmarkSrc?: string;
 }) {
   return (
     <Link
@@ -69,23 +66,14 @@ export function Logo({
       className="inline-flex shrink-0 items-center gap-2.5"
       aria-label="JobLinked home"
     >
-      {imageSrc ? (
-        <img src={imageSrc} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
-      ) : (
-        <span className="flex size-9 items-center justify-center rounded-[10px] bg-primary text-white">
-          <Link2 className="size-6 -rotate-45" strokeWidth={2.5} />
+      {compact ? (
+        <span className="flex size-9 shrink-0 overflow-hidden rounded-[10px]" aria-hidden="true">
+          <img src={imageSrc} alt="" width={150} height={43} className="h-[43px] w-[150px] max-w-none object-contain object-left" />
         </span>
+      ) : (
+        <img src={imageSrc} alt="JobLinked" width={211} height={60} className="h-auto w-[150px] object-contain" />
       )}
-      {!compact && imageSrc && (
-        <img
-          src={wordmarkSrc}
-          alt="JobLinked"
-          width={150}
-          height={50}
-          className="h-auto w-[150px] object-contain"
-        />
-      )}
-      {!compact && !imageSrc && (
+      {!imageSrc && (
         <span
           className={cn(
             "text-[23px] font-bold tracking-[-1px] text-navy",
