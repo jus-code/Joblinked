@@ -120,7 +120,7 @@
 [data-slot='table-cell'] { padding-top: 16px; padding-bottom: 16px; font-size: 13px; }
 [data-slot='table-row']:last-child { border-bottom: 0; }
 .hero-art { background: #edf4ff; border-radius: 44% 45% 42% 44%; }
-.hero-float { box-shadow: 0 12px 45px #12325b13; }
+.hero-float { display: none; }
 .hero-dot-grid { background-image: radial-gradient(#aec6e4 1px, transparent 1px); background-size: 14px 14px; }
 .job-card { transition: transform .2s, box-shadow .2s, border-color .2s; }
 .job-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px #12325b08; border-color: #b8cff8; }
