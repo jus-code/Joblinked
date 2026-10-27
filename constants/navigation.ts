@@ -2,7 +2,7 @@ import {
   LayoutDashboard,
   UserRound,
   FileText,
-  Sparkles,
+  Search,
   Bookmark,
   ClipboardList,
   Bell,
@@ -23,7 +23,7 @@ export const PORTAL_NAV = {
     { label: "Overview", path: "dashboard", icon: LayoutDashboard },
     { label: "My profile", path: "profile", icon: UserRound },
     { label: "My resumes", path: "resumes", icon: FileText },
-    { label: "Browse Jobs", path: "recommended", icon: Sparkles },
+    { label: "Browse Jobs", path: "recommended", icon: Search },
     { label: "Saved jobs", path: "saved", icon: Bookmark },
     { label: "My applications", path: "applications", icon: ClipboardList },
     {
