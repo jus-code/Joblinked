@@ -106,7 +106,7 @@ function AccountSettingsForm({ user }: { user: User }) {
             )}
           </Panel>
           <Panel
-            title="In-app notifications"
+            title="Notifications"
             description="Preferences apply only to your current demo account."
           >
             <form

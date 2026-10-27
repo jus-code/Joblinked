@@ -10,14 +10,20 @@ import {
 } from "@/components/shared";
 import { JobCard } from "@/components/jobs/job-card";
 import { PreferenceMatching, preferenceScore } from "@/components/jobs/preference-matching";
-import { SearchInput } from "@/components/dashboard/list-controls";
+import {
+  ListPagination,
+  SearchInput,
+} from "@/components/dashboard/list-controls";
 import { useDemo } from "@/hooks/use-demo";
 import { isJobOpen, matchJob } from "@/lib/format";
+
+const BROWSE_JOBS_PAGE_SIZE = 15;
 
 export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
   const { state, seeker } = useDemo();
   const [query, setQuery] = useState("");
   const [matchingPrompt, setMatchingPrompt] = useState("");
+  const [page, setPage] = useState(1);
   if (!seeker) return null;
   const jobs = state.jobs
     .filter((j) =>
@@ -39,6 +45,18 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
         ? b.postedAt.localeCompare(a.postedAt)
         : (matchingPrompt ? preferenceScore(b, matchingPrompt) - preferenceScore(a, matchingPrompt) : 0) || matchJob(b, seeker).score - matchJob(a, seeker).score,
     );
+  const currentPage = saved
+    ? 1
+    : Math.min(
+        page,
+        Math.max(1, Math.ceil(jobs.length / BROWSE_JOBS_PAGE_SIZE)),
+      );
+  const visibleJobs = saved
+    ? jobs
+    : jobs.slice(
+        (currentPage - 1) * BROWSE_JOBS_PAGE_SIZE,
+        currentPage * BROWSE_JOBS_PAGE_SIZE,
+      );
   return (
     <>
       <PageHeading
@@ -60,7 +78,15 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
           </LinkButton>
         }
       />
-      {!saved && <PreferenceMatching prompt={matchingPrompt} onSubmit={setMatchingPrompt} />}
+      {!saved && (
+        <PreferenceMatching
+          prompt={matchingPrompt}
+          onSubmit={(prompt) => {
+            setMatchingPrompt(prompt);
+            setPage(1);
+          }}
+        />
+      )}
       {!saved && (
         <div className="mb-6">
           <Notice title="A match you can understand">
@@ -74,7 +100,10 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
       <div className="mb-5 max-w-lg">
         <SearchInput
           value={query}
-          onChange={setQuery}
+          onChange={(value) => {
+            setQuery(value);
+            setPage(1);
+          }}
           placeholder={
             saved
               ? "Search saved opportunities…"
@@ -88,7 +117,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
       </p>
       {jobs.length ? (
         <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
-          {jobs.map((job) => (
+          {visibleJobs.map((job) => (
             <JobCard key={job.id} job={job} showMatch={!saved} />
           ))}
         </div>
@@ -105,6 +134,14 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
               : "Try another search or explore all local sample vacancies."
           }
           href="/jobs"
+        />
+      )}
+      {!saved && jobs.length > 0 && (
+        <ListPagination
+          total={jobs.length}
+          page={currentPage}
+          onChange={setPage}
+          pageSize={BROWSE_JOBS_PAGE_SIZE}
         />
       )}
     </>
