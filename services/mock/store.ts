@@ -18,16 +18,22 @@ export function current(): DemoState {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw);
-        if (saved.version === 1) {
+        if (saved.version === 1 || saved.version === 2) {
           const knownEmployers = new Set(state.employers.map((e) => e.id));
           const knownSeekers = new Set(state.seekers.map((s) => s.id));
-          if (Array.isArray(saved.jobs))
-            state.jobs = saved.jobs.filter(
+          if (Array.isArray(saved.jobs)) {
+            const savedJobs = saved.jobs.filter(
               (j: JobPosting) =>
                 knownEmployers.has(j.employerId) &&
                 typeof j.title === "string" &&
                 Array.isArray(j.skills),
             );
+            const savedJobIds = new Set(savedJobs.map((job: JobPosting) => job.id));
+            state.jobs = [
+              ...savedJobs,
+              ...state.jobs.filter((job) => !savedJobIds.has(job.id)),
+            ];
+          }
           if (Array.isArray(saved.applications))
             state.applications = saved.applications
               .filter(
@@ -94,7 +100,7 @@ function persist() {
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
-        version: 1,
+        version: 2,
         jobs,
         applications: state.applications
           .filter(

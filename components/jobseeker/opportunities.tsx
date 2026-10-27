@@ -46,7 +46,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
         title={
           saved
             ? "Keep good opportunities close."
-            : "A thoughtful place to start."
+            : "Browse Jobs"
         }
         description={
           saved
