@@ -68,6 +68,7 @@ export function NotificationsPage() {
             value={query}
             onChange={setQuery}
             placeholder="Search your notifications…"
+            className="sm:flex-[calc(100%-20px)]"
           />
           <div className="sm:w-48 sm:pt-7">
             <SelectField
