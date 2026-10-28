@@ -69,7 +69,7 @@ export function NotificationsPage() {
             onChange={setQuery}
             placeholder="Search your notifications…"
           />
-          <div className="sm:w-48 sm:pt-6">
+          <div className="sm:w-48 sm:pt-7">
             <SelectField
               label="Notification view"
               value={filter}
