@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Save, UserRound } from "lucide-react";
+import { Plus, Save, UserRound, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResumeAutofill } from "@/components/forms/resume-autofill";
 import { ResumeManagement } from "@/components/jobseeker/resumes";
@@ -55,6 +55,74 @@ type ProfileValues = z.infer<typeof profileSchema>;
 export function JobSeekerProfile() {
   const { seeker } = useDemo();
   return seeker ? <ProfileForm key={seeker.id} profile={seeker} /> : null;
+}
+
+function TagField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  help,
+  error,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  help?: string;
+  error?: string;
+  required?: boolean;
+}) {
+  const tags = value
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+  const [draft, setDraft] = useState("");
+  const addTag = () => {
+    const tag = draft.trim();
+    if (!tag || tags.includes(tag)) return setDraft("");
+    onChange([...tags, tag].join(", "));
+    setDraft("");
+  };
+  const removeTag = (tagToRemove: string) =>
+    onChange(tags.filter((tag) => tag !== tagToRemove).join(", "));
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-foreground">
+        {label}{required ? <span className="ml-1 text-destructive">*</span> : null}
+      </label>
+      <div className="flex min-h-11 flex-wrap items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 shadow-sm focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
+        {tags.map((tag) => (
+          <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+            {tag}
+            <button type="button" onClick={() => removeTag(tag)} className="rounded-full p-0.5 hover:bg-primary/15" aria-label={`Remove ${tag}`}>
+              <X className="size-3" />
+            </button>
+          </span>
+        ))}
+        <input
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+            if (event.key === "Enter" || event.key === ",") {
+              event.preventDefault();
+              addTag();
+            }
+          }}
+          placeholder={tags.length ? "Add another…" : placeholder}
+          className="min-w-[180px] flex-1 border-0 bg-transparent py-1 text-sm outline-none placeholder:text-muted-foreground"
+        />
+        <button type="button" onClick={addTag} className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground" aria-label={`Add ${label}`}>
+          <Plus className="size-4" />
+        </button>
+      </div>
+      {help ? <p className="text-xs text-muted-foreground">{help}</p> : null}
+      {error ? <p className="text-xs text-destructive">{error}</p> : null}
+    </div>
+  );
 }
 
 function ProfileForm({ profile }: { profile: JobSeeker }) {
@@ -168,26 +236,30 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
             description="These details power simple, transparent skill matching."
           >
             <FieldGroup>
-              <TextField
+              <TagField
                 label="Education or training"
-                required
-                {...form.register("education")}
+                value={form.watch("education")}
+                onChange={(value) => form.setValue("education", value, { shouldDirty: true, shouldValidate: true })}
+                placeholder="Type a qualification and press Enter"
                 error={errors.education?.message}
+                required
               />
-              <TextField
+              <TagField
                 label="Work experience"
-                multiline
-                rows={4}
-                help="You can include internships, volunteer work, or say you are seeking your first job."
-                {...form.register("experience")}
+                value={form.watch("experience")}
+                onChange={(value) => form.setValue("experience", value, { shouldDirty: true, shouldValidate: true })}
+                placeholder="Type a role or experience and press Enter"
+                help="Add internships, volunteer work, or previous roles as separate tags."
                 error={errors.experience?.message}
               />
-              <TextField
+              <TagField
                 label="Your skills"
-                required
-                help="Separate skills with commas, e.g. Microsoft Office, Communication, Customer service."
-                {...form.register("skills")}
+                value={form.watch("skills")}
+                onChange={(value) => form.setValue("skills", value, { shouldDirty: true, shouldValidate: true })}
+                placeholder="Type a skill and press Enter"
+                help="Add each skill as a separate tag."
                 error={errors.skills?.message}
+                required
               />
             </FieldGroup>
           </Panel>
