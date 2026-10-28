@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Save, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResumeAutofill } from "@/components/forms/resume-autofill";
+import { ResumeManagement } from "@/components/jobseeker/resumes";
 import { FieldGroup } from "@/components/ui/field";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -226,6 +227,9 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
             authorized PESO personnel.
           </Notice>
         </div>
+      </div>
+      <div className="mt-8 border-t border-border pt-8">
+        <ResumeManagement embedded />
       </div>
     </>
   );

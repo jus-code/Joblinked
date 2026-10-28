@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { EmploymentTracking } from "@/components/tracking/employment-tracking";
 import { JobSeekerDashboard } from "@/components/jobseeker/dashboard";
 import { JobSeekerProfile } from "@/components/jobseeker/profile";
-import { ResumeManagement } from "@/components/jobseeker/resumes";
 import { JobSeekerOpportunities } from "@/components/jobseeker/opportunities";
 import { NotificationsPage } from "@/components/dashboard/notifications-page";
 import { AccountSettings } from "@/components/dashboard/account-settings";
@@ -34,8 +33,6 @@ export default async function JobSeekerSection({
       return <JobSeekerDashboard />;
     case "profile":
       return <JobSeekerProfile />;
-    case "resumes":
-      return <ResumeManagement />;
     case "recommended":
       return <JobSeekerOpportunities />;
     case "saved":
