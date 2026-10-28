@@ -16,15 +16,17 @@ export function SearchInput({
   onChange,
   placeholder = "Search records…",
   label = "Search records",
+  className,
 }: {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   label?: string;
+  className?: string;
 }) {
   const id = useId();
   return (
-    <div className="min-w-0 flex-1">
+    <div className={`min-w-0 flex-1 ${className ?? ""}`}>
       <label htmlFor={id} className="sr-only">
         {label}
       </label>
