@@ -17,7 +17,7 @@ import { useAction } from "@/hooks/use-action";
 import { fileSize, formatDate } from "@/lib/format";
 import type { FileMetadata } from "@/types";
 
-export function ResumeManagement() {
+export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
   const { seeker, api } = useDemo();
   const { run, pending } = useAction();
   const [draft, setDraft] = useState<FileMetadata>();
@@ -25,11 +25,13 @@ export function ResumeManagement() {
   if (!seeker) return null;
   return (
     <>
-      <PageHeading
-        eyebrow="Put your best foot forward"
-        title="Your resume, ready to go."
-        description="Keep one sample resume. Replace it whenever you need an updated version."
-      />
+      {!embedded && (
+        <PageHeading
+          eyebrow="Put your best foot forward"
+          title="Your resume, ready to go."
+          description="Keep one sample resume. Replace it whenever you need an updated version."
+        />
+      )}
       <div className="mb-6">
         <Notice title="Metadata-only demonstration">
           No document content is read, uploaded, or stored. Use sample files

@@ -16,7 +16,7 @@ import type { FileMetadata } from "@/types";
 
 export function DocumentPreview({
   file,
-  label = "View metadata",
+  label = "View",
 }: {
   file: Pick<FileMetadata, "name"> & Partial<FileMetadata>;
   label?: string;
