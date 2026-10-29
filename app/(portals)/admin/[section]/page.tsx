@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { EmploymentTracking } from "@/components/tracking/employment-tracking";
 import { RoleManagement } from "@/components/admin/role-management";
 import { AdminDashboard } from "@/components/admin/dashboard";
+import { AdminProfile } from "@/components/admin/profile";
 import { AdminAccreditations } from "@/components/admin/accreditation";
 import { UserManagement } from "@/components/admin/users";
 import { VacancyOversight } from "@/components/admin/vacancies";
@@ -42,6 +43,8 @@ export default async function AdminSection({
       return <EmploymentTracking mode="admin" />;
     case "dashboard":
       return <AdminDashboard />;
+    case "profile":
+      return <AdminProfile />;
     case "accreditation":
       return <AdminAccreditations />;
     case "users":

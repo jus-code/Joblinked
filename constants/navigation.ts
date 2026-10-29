@@ -48,6 +48,7 @@ export const PORTAL_NAV = {
   ],
   admin: [
     { label: "Overview", path: "dashboard", icon: LayoutDashboard },
+    { label: "My profile", path: "profile", icon: UserRound },
     {
       label: "Employer accreditation",
       path: "accreditation",
