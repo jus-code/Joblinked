@@ -113,7 +113,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
       </div>
       <p className="mb-4 text-xs text-muted-foreground" aria-live="polite">
         {jobs.length}{" "}
-        {saved ? "saved opportunities" : "matching sample vacancies"}
+        {saved ? "saved opportunities" : "matching vacancies"}
       </p>
       {jobs.length ? (
         <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
@@ -131,7 +131,7 @@ export function JobSeekerOpportunities({ saved = false }: { saved?: boolean }) {
           description={
             saved
               ? "Tap the bookmark on a vacancy to save it here, or clear your search."
-              : "Try another search or explore all local sample vacancies."
+              : "Try another search or explore all local vacancies."
           }
           href="/jobs"
         />

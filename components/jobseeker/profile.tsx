@@ -37,7 +37,7 @@ const profileSchema = z.object({
     .min(5, "Add a short professional headline.")
     .max(150),
   barangay: z.enum(BARANGAYS as [string, ...string[]]),
-  address: z.string().trim().min(5, "Enter your sample address.").max(250),
+  address: z.string().trim().min(5, "Enter your address.").max(250),
   education: z
     .string()
     .trim()
@@ -157,7 +157,7 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
         ],
       });
       form.reset(values);
-    }, "Sample profile updated for this session.");
+    }, "profile updated for this session.");
   return (
     <>
       <PageHeading
@@ -181,7 +181,7 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
           />
           <Panel
             title="Personal & contact details"
-            description="Use fictional information in this frontend demo."
+            description="Use provided information in this frontend ."
           >
             <div className="flex flex-wrap items-center gap-4 rounded-lg border border-dashed border-border bg-muted/30 p-4">
               <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-primary">
@@ -189,7 +189,7 @@ function ProfileForm({ profile }: { profile: JobSeeker }) {
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-1">
                 <label htmlFor="profile-picture" className="text-sm font-semibold text-foreground">Profile picture</label>
-                <p className="text-xs leading-5 text-muted-foreground">Upload a clear face photo. This demo keeps it in memory until refresh.</p>
+                <p className="text-xs leading-5 text-muted-foreground">Upload a clear face photo. This  keeps it in memory until refresh.</p>
                 <input id="profile-picture" type="file" accept="image/png,image/jpeg,image/webp" className="mt-2 block w-full text-xs text-muted-foreground file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-primary-foreground hover:file:bg-primary/90" onChange={(event) => { const file = event.target.files?.[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) { event.target.value = ""; return; } const reader = new FileReader(); reader.onload = () => setProfilePicture(typeof reader.result === "string" ? reader.result : null); reader.readAsDataURL(file); }} />
               </div>
             </div>

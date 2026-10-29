@@ -157,7 +157,7 @@ export function EmployerJobs() {
                                       api.updateJob(job.id, {
                                         status: "Closed",
                                       }),
-                                    "Sample vacancy closed.",
+                                    "vacancy closed.",
                                   )
                                 }
                               >
@@ -176,7 +176,7 @@ export function EmployerJobs() {
                                       api.updateJob(job.id, {
                                         status: "Published",
                                       }),
-                                    "Sample vacancy published.",
+                                    "vacancy published.",
                                   )
                                 }
                               >
@@ -208,7 +208,7 @@ export function EmployerJobs() {
         ) : (
           <EmptyState
             title="Your next opening starts here."
-            description="No vacancies match this view. Clear the filters or create a new sample job posting."
+            description="No vacancies match this view. Clear the filters or create a new job posting."
             href="/employer/jobs/new"
             label="Create a vacancy"
           />

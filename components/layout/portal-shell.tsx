@@ -278,7 +278,7 @@ export function PortalShell({
           <SheetHeader className="sr-only">
             <SheetTitle>Workspace navigation</SheetTitle>
             <SheetDescription>
-              Navigate your role-based demo workspace.
+              Navigate your role-based workspace.
             </SheetDescription>
           </SheetHeader>
           {sidebar(true)}
@@ -370,7 +370,7 @@ export function PortalShell({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel>Sample account</DropdownMenuLabel>
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
                   <DropdownMenuItem
                     onClick={() => router.push(`/${role}/settings`)}
                   >
@@ -393,31 +393,26 @@ export function PortalShell({
                     }
                   >
                     <LogOut />
-                    Leave role preview
+                    Sign out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </header>
-        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b bg-blue-soft/60 px-5 py-2 text-[10px] text-navy/70 lg:px-8">
-          <span>
-            <span className="font-semibold">Demo workspace</span> · Fictional
-            records only. No real applications or files are transmitted.
-          </span>
-          <DemoSwitcher compact />
-        </div>
         <main
           id="main-content"
           className="mx-auto max-w-[1440px] p-5 sm:p-7 lg:p-8"
         >
-          {children}
+          <div className="space-y-8">
+            {children}
+          </div>
         </main>
         <div className="no-print flex flex-wrap items-center justify-between gap-3 px-8 pb-6 text-[10px] text-muted-foreground">
-          <span>JobLinked · Santa Maria, Bulacan · Independent prototype</span>
+          <span>JobLinked · Santa Maria, Bulacan</span>
           <div className="flex gap-4">
             <Link href="/privacy">Privacy Notice</Link>
-            <Link href="/terms">Demo Terms</Link>
+            <Link href="/terms">Terms</Link>
           </div>
         </div>
       </div>
@@ -426,7 +421,7 @@ export function PortalShell({
           <DialogHeader>
             <DialogTitle>Find your way around.</DialogTitle>
             <DialogDescription>
-              Search pages and vacancies visible to your current demo role.
+              Search pages and vacancies available in your workspace.
             </DialogDescription>
           </DialogHeader>
           <InputGroup>

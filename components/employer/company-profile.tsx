@@ -38,7 +38,7 @@ const companySchema = z.object({
   address: z
     .string()
     .trim()
-    .min(5, "Enter the sample business address.")
+    .min(5, "Enter the business address.")
     .max(250),
   website: z
     .string()
@@ -91,13 +91,13 @@ function CompanyProfileForm({ company }: { company: Employer }) {
             run(async () => {
               await api.updateCompany(values);
               form.reset(values);
-            }, "Sample company profile updated for this session."),
+            }, "company profile updated for this session."),
           )}
           className="flex min-w-0 flex-col gap-6"
         >
           <Panel
             title="Company details"
-            description="These fictional details appear alongside your public sample vacancies."
+            description="These provided details appear alongside your public vacancies."
           >
             <FieldGroup>
               <div className="grid gap-5 sm:grid-cols-2">
@@ -163,7 +163,7 @@ function CompanyProfileForm({ company }: { company: Employer }) {
           </Panel>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-[11px] text-muted-foreground">
-              Changes are session-only in this demo.
+              Changes are session-only in this .
             </p>
             <Button type="submit" disabled={pending}>
               <Save data-icon="inline-start" />

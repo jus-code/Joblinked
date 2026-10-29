@@ -83,7 +83,7 @@ export function EmployerApplicants({
       />
       <Panel
         title="Your applicants"
-        description={`${applications.length} sample applications in this view`}
+        description={`${applications.length} applications in this view`}
       >
         <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-end">
           <SearchInput
@@ -180,7 +180,7 @@ export function EmployerApplicants({
         ) : (
           <EmptyState
             title="No candidates in this view yet."
-            description="Try another vacancy or clear the filters. Candidates appear after a job seeker submits a sample application to your company."
+            description="Try another vacancy or clear the filters. Candidates appear after a job seeker submits a application to your company."
           />
         )}
         <ListPagination
@@ -206,7 +206,7 @@ export function CandidateDetail({ id }: { id: string }) {
     return (
       <EmptyState
         title="This candidate isn’t available to your company."
-        description="Only applications submitted to your own vacancies can be reviewed in this demo."
+        description="Only applications submitted to your own vacancies can be reviewed in this ."
         href="/employer/applicants"
         label="Back to your applicants"
       />
@@ -283,7 +283,7 @@ export function CandidateDetail({ id }: { id: string }) {
           />
           <CandidateNotes key={id} application={application} />
           <Notice title="Respect candidate privacy">
-            These sample details must not be shared with unrelated employers.
+            These details must not be shared with unrelated employers.
             The future backend must enforce ownership, purpose-limited access,
             and retention policies.
           </Notice>
@@ -341,7 +341,7 @@ function RecruitmentStatusForm({
     setError("");
     await run(
       () => api.updateApplication(application.id, status, interview),
-      "Sample application updated. The job seeker can see the change in their portal.",
+      "application updated. The job seeker can see the change in their portal.",
     );
   };
   return (
@@ -375,7 +375,7 @@ function RecruitmentStatusForm({
                 maxLength={250}
               />
               <p className="text-[11px] leading-5 text-muted-foreground">
-                This records a sample appointment only. No email, calendar
+                This records a appointment only. No email, calendar
                 invite, or SMS is sent.
               </p>
             </>
@@ -393,7 +393,7 @@ function RecruitmentStatusForm({
           )}
           <Button type="submit" disabled={pending}>
             <Send data-icon="inline-start" />
-            {pending ? "Updating…" : "Update sample application"}
+            {pending ? "Updating…" : "Update application"}
           </Button>
         </FieldGroup>
       </form>
@@ -416,7 +416,7 @@ function CandidateNotes({ application }: { application: JobApplication }) {
           void run(async () => {
             await api.addNote(application.id, note);
             setNote("");
-          }, "Internal sample note added.");
+          }, "Internal note added.");
         }}
       >
         <FieldGroup>

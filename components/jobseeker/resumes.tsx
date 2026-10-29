@@ -29,17 +29,17 @@ export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
         <PageHeading
           eyebrow="Put your best foot forward"
           title="Your resume, ready to go."
-          description="Keep one sample resume. Replace it whenever you need an updated version."
+          description="Keep one resume. Replace it whenever you need an updated version."
         />
       )}
       <div className="mb-6">
-        <Notice title="Metadata-only demonstration">
-          No document content is read, uploaded, or stored. Use sample files
+        <Notice title="Metadata-only nstration">
+          No document content is read, uploaded, or stored. Use files
           only. Selected filenames and metadata disappear on refresh.
         </Notice>
       </div>
       <div className="grid items-start gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <Panel title="My sample resumes">
+        <Panel title="My resumes">
           {seeker.resumes.length ? (
             <ul className="flex flex-col gap-4">
               {seeker.resumes.map((file) => (
@@ -70,7 +70,7 @@ export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
                     </Button>
                     <ConfirmButton
                       variant="ghost"
-                      title="Delete this sample resume?"
+                      title="Delete this resume?"
                       description="This removes the metadata from your profile. Existing applications keep the name of the resume used when they were submitted."
                       onConfirm={() =>
                         run(
@@ -89,12 +89,12 @@ export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
           ) : (
             <EmptyState
               title="Start with your story."
-              description="Add a sample resume using the form. Only its filename, size, and type will be kept in this session."
+              description="Add a resume using the form. Only its filename, size, and type will be kept in this session."
             />
           )}
         </Panel>
         <Panel
-          title={replacing ? "Replace a sample resume" : "Add a sample resume"}
+          title={replacing ? "Replace a resume" : "Add a resume"}
           description="PDF, DOC, or DOCX · Up to 5 MB"
         >
           {seeker.resumes.length > 0 && !replacing ? (
@@ -102,7 +102,7 @@ export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
           ) : <div className="flex flex-col gap-5">
             <FilePicker
               key={replacing ?? "new"}
-              label="Choose a sample resume"
+              label="Choose a resume"
               value={draft}
               onChange={setDraft}
             />
@@ -120,8 +120,8 @@ export function ResumeManagement({ embedded = false }: { embedded?: boolean }) {
                     setReplacing(null);
                   },
                   replacing
-                    ? "Sample resume metadata replaced."
-                    : "Sample resume metadata added.",
+                    ? "resume metadata replaced."
+                    : "resume metadata added.",
                 )
               }
             >

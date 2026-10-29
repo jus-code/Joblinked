@@ -174,10 +174,10 @@ function VacancyForm({ job }: { job?: JobPosting }) {
       else await api.createJob(input);
       toast.success(
         status === "Published"
-          ? "Sample vacancy published. It is now visible in Browse Jobs."
+          ? "vacancy published. It is now visible in Browse Jobs."
           : status === "Draft"
-            ? "Sample vacancy saved as a draft."
-            : "Sample vacancy changes saved.",
+            ? "vacancy saved as a draft."
+            : "vacancy changes saved.",
       );
       router.push("/employer/jobs");
     });
@@ -334,8 +334,8 @@ function VacancyForm({ job }: { job?: JobPosting }) {
             />
           </FieldGroup>
         </Panel>
-        <Notice title="Sample publication only">
-          Publishing updates this browser’s connected demo. No vacancy is sent
+        <Notice title="publication only">
+          Publishing updates this browser’s connected . No vacancy is sent
           to Facebook, email, SMS, or a government system.
         </Notice>
         <div className="flex flex-wrap justify-end gap-3">
@@ -359,7 +359,7 @@ function VacancyForm({ job }: { job?: JobPosting }) {
                 ? "Save closed vacancy"
                 : job?.status === "Published"
                   ? "Save published vacancy"
-                  : "Publish sample vacancy"}
+                  : "Publish vacancy"}
           </Button>
         </div>
       </form>
