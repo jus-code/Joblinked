@@ -63,14 +63,14 @@ export function NotificationsPage() {
         title="Your notifications"
         description={`${unread} unread · Sample in-app notifications only`}
       >
-        <div className="mb-5 flex flex-col gap-3 sm:flex-row">
+        <div className="mb-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-end">
           <SearchInput
             value={query}
             onChange={setQuery}
             placeholder="Search your notifications…"
             className="sm:flex-[calc(100%-20px)]"
           />
-          <div className="sm:w-48 sm:pt-7">
+          <div className="sm:w-48">
             <SelectField
               label="Notification view"
               value={filter}
