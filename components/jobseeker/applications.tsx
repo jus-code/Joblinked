@@ -64,7 +64,7 @@ export function JobSeekerApplications() {
       <PageHeading
         eyebrow="Every step counts"
         title="See how your story is moving."
-        description="Track your sample applications, from your first hello to the employer’s decision."
+        description="Track your applications, from your first hello to the employer’s decision."
         action={
           <LinkButton href="/jobs">
             <BriefcaseBusiness data-icon="inline-start" />
@@ -74,7 +74,7 @@ export function JobSeekerApplications() {
       />
       <Panel
         title="My applications"
-        description="Only applications submitted by your current demo account are shown."
+        description="Only applications submitted by your current account are shown."
       >
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <SearchInput
@@ -162,7 +162,7 @@ export function JobSeekerApplications() {
         ) : (
           <EmptyState
             title="A fresh start is a good start."
-            description="No applications match this view. Explore an opportunity and submit a sample application to see it here."
+            description="No applications match this view. Explore an opportunity and submit a application to see it here."
             href="/jobs"
           />
         )}
@@ -187,7 +187,7 @@ export function JobSeekerApplicationDetail({ id }: { id: string }) {
     return (
       <EmptyState
         title="This application isn’t available."
-        description="You can only view applications from your current sample account."
+        description="You can only view applications from your current account."
         href="/jobseeker/applications"
         label="Back to my applications"
       />

@@ -38,7 +38,7 @@ export function EmployerRestriction() {
     <div className="mb-6">
       <Notice title={`Accreditation: ${employer.accreditationStatus}`} warning>
         You can prepare drafts, but publishing is unavailable until PESO
-        approves your sample accreditation.{" "}
+        approves your accreditation.{" "}
         <Link
           href="/employer/accreditation"
           className="font-medium underline underline-offset-4"
@@ -91,7 +91,7 @@ export function EmployerDashboard() {
             tone: "teal",
           },
           {
-            label: "Sample placements",
+            label: "placements",
             value: applications.filter((a) => a.status === "Hired").length,
             icon: Handshake,
             tone: "teal",
@@ -165,7 +165,7 @@ export function EmployerDashboard() {
             ) : (
               <EmptyState
                 title="Your next teammate is out there."
-                description="Publish an approved vacancy to start receiving sample applications."
+                description="Publish an approved vacancy to start receiving applications."
                 href="/employer/jobs/new"
                 label="Create a vacancy"
               />
@@ -220,8 +220,8 @@ export function EmployerDashboard() {
             <StatusBadge status={employer.accreditationStatus} />
             <p className="mt-4 text-xs leading-6 text-muted-foreground">
               {employer.accreditationStatus === "Approved"
-                ? "Your sample business is approved to publish vacancies in this demonstration. This is not actual municipal accreditation."
-                : "A PESO demo administrator can review your submitted metadata and update the decision."}
+                ? "Your business is approved to publish vacancies in this nstration. This is not actual municipal accreditation."
+                : "A PESO  administrator can review your submitted metadata and update the decision."}
             </p>
             <Link
               href="/employer/accreditation"

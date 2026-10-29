@@ -92,7 +92,7 @@ export function JobSeekerDashboard() {
             label: "Profile complete",
             value: `${completion}%`,
             icon: UserRound,
-            note: "Your sample profile, at a glance",
+            note: "Your profile, at a glance",
             tone: "teal",
           },
         ]}
@@ -106,7 +106,7 @@ export function JobSeekerDashboard() {
             Your skills belong somewhere great.
           </h2>
           <p className="mt-2 max-w-lg text-xs leading-6 text-white/70">
-            Explore verified sample employers across Santa Maria’s 24 barangays.
+            Explore verified employers across Santa Maria’s 24 barangays.
             Your next connection could be just around the corner.
           </p>
         </div>
@@ -164,7 +164,7 @@ export function JobSeekerDashboard() {
             ) : (
               <EmptyState
                 title="Your first opportunity is waiting."
-                description="Explore jobs, choose a role that fits, and submit a sample application."
+                description="Explore jobs, choose a role that fits, and submit a application."
                 href="/jobs"
               />
             )}
@@ -212,7 +212,7 @@ export function JobSeekerDashboard() {
                   label: "Education and skills",
                   done: !!seeker.education && !!seeker.skills.length,
                 },
-                { label: "Sample resume added", done: !!seeker.resumes.length },
+                { label: "resume added", done: !!seeker.resumes.length },
               ].map((item) => (
                 <li key={item.label} className="flex items-center gap-2">
                   <CheckCircle2
@@ -234,7 +234,7 @@ export function JobSeekerDashboard() {
           {interview && (
             <Panel
               title="Your next conversation"
-              description="A sample interview is on your calendar."
+              description="A interview is on your calendar."
             >
               <div className="teal-icon mb-4">
                 <CalendarDays className="size-5" />
@@ -285,7 +285,7 @@ export function JobSeekerDashboard() {
               </ul>
             ) : (
               <p className="text-xs leading-6 text-muted-foreground">
-                You’re all caught up. We’ll show new sample updates here.
+                You’re all caught up. We’ll show new updates here.
               </p>
             )}
             <Link

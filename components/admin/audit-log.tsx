@@ -40,7 +40,7 @@ export function AuditLogPage() {
       <PageHeading
         eyebrow="A clear record of every step"
         title="Transparency is part of the work."
-        description="Review sample approvals, posting changes, application updates, and system configuration activity."
+        description="Review approvals, posting changes, application updates, and system configuration activity."
         action={
           <Button
             variant="outline"
@@ -48,7 +48,7 @@ export function AuditLogPage() {
             onClick={() =>
               downloadCsv(
                 "joblinked-DEMO-audit-log.csv",
-                ["DEMO timestamp", "Sample actor", "Action", "Target"],
+                ["DEMO timestamp", "actor", "Action", "Target"],
                 records.map((log) => [
                   log.date,
                   log.actor,
@@ -59,7 +59,7 @@ export function AuditLogPage() {
             }
           >
             <Download data-icon="inline-start" />
-            Export demo log
+            Export  log
           </Button>
         }
       />
@@ -125,7 +125,7 @@ export function AuditLogPage() {
         ) : (
           <EmptyState
             title="No activity matches this search."
-            description="Clear the search or perform a sample workflow to add activity."
+            description="Clear the search or perform a workflow to add activity."
           />
         )}
         <ListPagination

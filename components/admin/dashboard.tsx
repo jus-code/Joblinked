@@ -55,7 +55,7 @@ export function AdminDashboard() {
         action={
           <LinkButton href="/admin/reports" variant="outline">
             <ChartNoAxesCombined data-icon="inline-start" />
-            View demo reports
+            View  reports
           </LinkButton>
         }
       />
@@ -75,7 +75,7 @@ export function AdminDashboard() {
             label: "Pending accreditations",
             value: pending.length,
             icon: ShieldCheck,
-            note: "Sample submissions awaiting review",
+            note: "submissions awaiting review",
             tone: "teal",
           },
           {
@@ -97,17 +97,17 @@ export function AdminDashboard() {
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         {[
           {
-            label: "Sample applications",
+            label: "applications",
             value: state.applications.length,
             icon: ClipboardCheck,
           },
           {
-            label: "Recorded demo referrals",
+            label: "Recorded  referrals",
             value: state.applications.filter((a) => a.referred).length,
             icon: Handshake,
           },
           {
-            label: "Sample placements",
+            label: "placements",
             value: state.applications.filter((a) => a.status === "Hired")
               .length,
             icon: Users,
@@ -131,7 +131,7 @@ export function AdminDashboard() {
         <div className="flex min-w-0 flex-col gap-6">
           <Panel
             title="Local employment activity"
-            description="Last 14 days · Fictional applications grouped by submission date; placements reflect current outcomes."
+            description="Last 14 days · Provided applications grouped by submission date; placements reflect current outcomes."
           >
             <EmploymentActivityChart data={days} />
           </Panel>
@@ -177,7 +177,7 @@ export function AdminDashboard() {
               })}
               {!pending.length && (
                 <li className="py-5 text-xs text-muted-foreground">
-                  No pending sample accreditations. Your review queue is up to
+                  No pending accreditations. Your review queue is up to
                   date.
                 </li>
               )}
@@ -193,8 +193,8 @@ export function AdminDashboard() {
               Every connection matters.
             </h2>
             <p className="mt-3 text-xs leading-6 text-white/70">
-              Explore the demo across Santa Maria’s 24 barangays. All numbers
-              represent fictional records, not actual municipal statistics.
+              Explore the  across Santa Maria’s 24 barangays. All numbers
+              represent provided records, not actual municipal statistics.
             </p>
             <LinkButton
               href="/admin/reports"
@@ -207,7 +207,7 @@ export function AdminDashboard() {
           </div>
           <Panel
             title="Recent workspace activity"
-            description="Sample changes across all three roles."
+            description="changes across all three roles."
           >
             <ol className="flex flex-col gap-5">
               {state.auditLogs.slice(0, 5).map((log) => (

@@ -81,7 +81,7 @@ export function LaborMarketReports() {
       `joblinked-DEMO-barangay-report-${from}-to-${to}.csv`,
       [
         "DEMO DATA — Barangay",
-        "Registered sample residents (all time)",
+        "Registered residents (all time)",
         "Currently published vacancies posted in period",
         "Applications submitted in period",
         "Current hired outcomes from those applications",
@@ -103,16 +103,16 @@ export function LaborMarketReports() {
     <>
       <div className="print-title mb-5 hidden">
         <p className="text-xl font-semibold">
-          JobLinked · Demo Labor Market Report
+          JobLinked ·  Labor Market Report
         </p>
         <p className="text-xs">
-          Fictional data only. Not an official municipal report.
+          Provided data only. Not an official municipal report.
         </p>
       </div>
       <PageHeading
         eyebrow="A more informed local picture"
         title="Insights that keep people at the center."
-        description="Explore fictional vacancies, referrals, and placement outcomes across Santa Maria’s 24 barangays."
+        description="Explore provided vacancies, referrals, and placement outcomes across Santa Maria’s 24 barangays."
         action={
           <>
             <Button
@@ -121,7 +121,7 @@ export function LaborMarketReports() {
               onClick={exportReport}
             >
               <Download data-icon="inline-start" />
-              Download demo CSV
+              Download  CSV
             </Button>
             <Button
               variant="outline"
@@ -174,7 +174,7 @@ export function LaborMarketReports() {
         <>
           <p className="mb-5 text-xs text-muted-foreground">
             {formatDate(from)} – {formatDate(to)} · Generated{" "}
-            {formatDate(report.generatedAt)} · Demo records only
+            {formatDate(report.generatedAt)} · Current records only
           </p>
           <StatCards
             stats={[
@@ -182,21 +182,21 @@ export function LaborMarketReports() {
                 label: "Published vacancy records",
                 value: report.vacancies,
                 icon: BriefcaseBusiness,
-                note: `${report.openings} sample openings in these postings`,
+                note: `${report.openings} openings in these postings`,
               },
               {
-                label: "Sample applications",
+                label: "applications",
                 value: report.applications,
                 icon: ClipboardCheck,
               },
               {
-                label: "Recorded demo referrals",
+                label: "Recorded  referrals",
                 value: report.referrals,
                 icon: Handshake,
                 tone: "teal",
               },
               {
-                label: "Sample placements",
+                label: "placements",
                 value: report.placements,
                 icon: Users,
                 tone: "teal",
@@ -205,23 +205,23 @@ export function LaborMarketReports() {
           />
           <div className="mb-6">
             <Notice title="How to read this report">
-              All data is fictional. Applications are grouped by submission
-              date; placements and referrals reflect their current demo outcome.
+              All data is provided. Applications are grouped by submission
+              date; placements and referrals reflect their current  outcome.
               Vacancy counts include currently published postings from approved
               employers posted in the selected period. Resident counts are
-              all-time sample registrations, not municipal population data.
+              all-time registrations, not municipal population data.
             </Notice>
           </div>
           <div className="mb-6 grid items-start gap-6 xl:grid-cols-[1.6fr_1fr]">
             <Panel
               title="Applications & placement outcomes"
-              description="Monthly sample submissions and their current hired outcomes."
+              description="Monthly submissions and their current hired outcomes."
             >
               <EmploymentActivityChart data={report.months} />
             </Panel>
             <Panel
               title="Opportunity by employment type"
-              description="Currently published sample vacancy records."
+              description="Currently published vacancy records."
             >
               <EmploymentTypeChart
                 data={JOB_TYPES.map((name) => ({
@@ -234,7 +234,7 @@ export function LaborMarketReports() {
           <div className="mb-6 grid items-start gap-6 xl:grid-cols-[1fr_1.4fr]">
             <Panel
               title="Where opportunities are growing"
-              description="Top six barangays by sample vacancy records."
+              description="Top six barangays by vacancy records."
             >
               <BarangayVacancyChart data={report.barangays} />
             </Panel>
@@ -249,14 +249,14 @@ export function LaborMarketReports() {
                   </dt>
                   <dd className="mt-2 leading-6 text-muted-foreground">
                     One posting can include multiple openings. This period has{" "}
-                    {report.vacancies} sample postings with {report.openings}{" "}
+                    {report.vacancies} postings with {report.openings}{" "}
                     openings.
                   </dd>
                 </div>
                 <div>
                   <dt className="font-semibold text-navy">Referral marker</dt>
                   <dd className="mt-2 leading-6 text-muted-foreground">
-                    An administrator recorded a demo referral. No external
+                    An administrator recorded a  referral. No external
                     message or referral form was sent.
                   </dd>
                 </div>
@@ -299,8 +299,8 @@ export function LaborMarketReports() {
               </TableBody>
             </Table>
             <p className="mt-4 text-[10px] leading-6 text-muted-foreground">
-              *All-time fictional registered residents. Other columns follow the
-              selected period and definitions above. For prototype review only;
+              *All-time provided registered residents. Other columns follow the
+              selected period and definitions above. For platform review only;
               not official Labor Market Information.
             </p>
           </Panel>

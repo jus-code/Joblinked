@@ -214,7 +214,7 @@ export function PageHeading({
   );
 }
 export function Notice({
-  title = "Frontend demo",
+  title = "Information",
   children,
   warning = false,
 }: {
@@ -303,7 +303,7 @@ export function StatCards({
               {value}
             </p>
             <p className="mt-2 text-[10px] text-muted-foreground">
-              {note ?? "Sample records · demo data"}
+              {note ?? "Current records"}
             </p>
           </div>
         </div>

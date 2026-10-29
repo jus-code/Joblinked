@@ -158,11 +158,6 @@ export function EmploymentTracking({
           )
         }
       />
-      <Notice title="Shared frontend demonstration">
-        Updates synchronize between role previews in this open app session. New
-        tracking changes, permissions, and corrections reset on reload. No
-        backend or cross-device synchronization is connected.
-      </Notice>
       <div className="my-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map(([label, value]) => (
           <Panel key={label} title={String(label)}>

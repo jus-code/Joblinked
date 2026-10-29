@@ -60,11 +60,11 @@ export function VacancyOversight() {
       <PageHeading
         eyebrow="Keep local opportunities trustworthy"
         title="Clear standards. Better opportunities."
-        description="Inspect sample job postings, confirm employer approval, and record moderation decisions."
+        description="Inspect job postings, confirm employer approval, and record moderation decisions."
       />
       <Panel
         title="Vacancy oversight"
-        description="Moderation changes are recorded in the demo audit log."
+        description="Moderation changes are recorded in the  audit log."
       >
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <SearchInput
@@ -144,7 +144,7 @@ export function VacancyOversight() {
         ) : (
           <EmptyState
             title="No vacancies in this view."
-            description="Clear your filters to see more sample postings."
+            description="Clear your filters to see more postings."
           />
         )}
         <ListPagination
@@ -189,7 +189,7 @@ function VacancyReview({ id, onClose }: { id: string; onClose: () => void }) {
     void run(async () => {
       await api.moderateJob(id, status, reason.trim());
       onClose();
-    }, `Sample vacancy ${status.toLowerCase()}.`);
+    }, `vacancy ${status.toLowerCase()}.`);
   };
   return (
     <>
@@ -274,7 +274,7 @@ function VacancyReview({ id, onClose }: { id: string; onClose: () => void }) {
       </div>
       <p className="text-[10px] leading-5 text-muted-foreground">
         Approval requires an approved employer and an unexpired deadline.
-        Removed records remain in the sample audit and recruitment history.
+        Removed records remain in the audit and recruitment history.
       </p>
     </>
   );

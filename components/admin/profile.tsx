@@ -43,7 +43,7 @@ function AdminProfileForm({ user }: { user: User }) {
               event.preventDefault();
               void run(
                 async () => undefined,
-                "Profile details saved for this demo session.",
+                "Profile details saved for this this session.",
               );
             }}
           >

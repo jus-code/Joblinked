@@ -73,7 +73,7 @@ export function AnnouncementManagement() {
       <PageHeading
         eyebrow="Keep your community connected"
         title="A little information opens new doors."
-        description="Create sample employment notices and preview a vacancy distribution plan."
+        description="Create employment notices and preview a vacancy distribution plan."
         action={
           <Button onClick={() => setSelected("new")}>
             <Plus data-icon="inline-start" />
@@ -83,7 +83,7 @@ export function AnnouncementManagement() {
       />
       <div className="mb-6">
         <Notice title="No automatic distribution">
-          Published demo notices appear on the PESO Services page and in-app
+          Published  notices appear on the PESO Services page and in-app
           inboxes. A distribution date is a planning marker only; Facebook,
           email, SMS, and government-system integrations are unavailable.
         </Notice>
@@ -107,7 +107,7 @@ export function AnnouncementManagement() {
                   <div className="flex-1">
                     <div className="mb-3 flex flex-wrap gap-2">
                       <Badge variant={item.published ? "secondary" : "outline"}>
-                        {item.published ? "Published · demo" : "Draft"}
+                        {item.published ? "Published · " : "Draft"}
                       </Badge>
                       <Badge variant="outline">{item.category}</Badge>
                     </div>
@@ -127,12 +127,12 @@ export function AnnouncementManagement() {
                     </Button>
                     <ConfirmButton
                       variant="ghost"
-                      title="Delete this sample announcement?"
-                      description="This removes the notice from the demo public page. Existing inbox notifications may remain as historical records."
+                      title="Delete this announcement?"
+                      description="This removes the notice from the  public page. Existing inbox notifications may remain as historical records."
                       onConfirm={() =>
                         run(
                           () => api.deleteAnnouncement(item.id),
-                          "Sample announcement deleted.",
+                          "announcement deleted.",
                         )
                       }
                     >
@@ -156,7 +156,7 @@ export function AnnouncementManagement() {
         ) : (
           <EmptyState
             title="Make space for a useful update."
-            description="No announcements match this search. Create a sample notice to see it here."
+            description="No announcements match this search. Create a notice to see it here."
           />
         )}
       </Panel>
@@ -208,8 +208,8 @@ function AnnouncementEditor({
             : "Create a useful community notice"}
         </DialogTitle>
         <DialogDescription>
-          Use clearly fictional, sample information. Publishing affects only
-          this connected frontend demo.
+          Use clearly provided, information. Publishing affects only
+          this connected frontend .
         </DialogDescription>
       </DialogHeader>
       <form
@@ -224,7 +224,7 @@ function AnnouncementEditor({
               announcement?.id,
             );
             onClose();
-          }, "Sample announcement saved."),
+          }, "announcement saved."),
         )}
       >
         <FieldGroup>
@@ -261,10 +261,10 @@ function AnnouncementEditor({
           <Field orientation="horizontal">
             <Field>
               <FieldLabel htmlFor="publish-announcement">
-                Publish in the demo
+                Publish
               </FieldLabel>
               <FieldDescription>
-                Show this sample notice on PESO Services and create in-app
+                Show this notice on PESO Services and create in-app
                 notifications.
               </FieldDescription>
             </Field>
@@ -282,7 +282,7 @@ function AnnouncementEditor({
           </Field>
           <Button disabled={pending} type="submit">
             <Save data-icon="inline-start" />
-            {pending ? "Saving…" : "Save sample notice"}
+            {pending ? "Saving…" : "Save notice"}
           </Button>
         </FieldGroup>
       </form>

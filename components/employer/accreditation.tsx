@@ -53,34 +53,34 @@ function AccreditationWorkspace({
     run(async () => {
       if (!complete) {
         setError(
-          "Attach sample metadata for every required document category.",
+          "Attach metadata for every required document category.",
         );
-        throw new Error("Attach a sample file for every required category.");
+        throw new Error("Attach a file for every required category.");
       }
       await api.submitAccreditation(documents);
       setError("");
       setEditing(false);
-    }, "Sample accreditation submitted for PESO review.");
+    }, "accreditation submitted for PESO review.");
   return (
     <>
       <PageHeading
         eyebrow="A trusted local connection"
         title="Your accreditation journey."
-        description="Review your sample documents, read PESO feedback, and keep your requirements up to date."
+        description="Review your documents, read PESO feedback, and keep your requirements up to date."
         action={<StatusBadge status={accreditation.status} />}
       />
       <div className="mb-6">
         <Notice
           title={
             accreditation.status === "Approved"
-              ? "Approved in the demo only"
+              ? "Approved in the  only"
               : "Publishing requires approval"
           }
           warning={accreditation.status !== "Approved"}
         >
           {accreditation.status === "Approved"
-            ? "Your sample company can publish vacancies. This is not actual municipal verification or an official government decision."
-            : "You may save job drafts while your accreditation is reviewed. Only a PESO demo administrator can approve your sample company."}
+            ? "Your company can publish vacancies. This is not actual municipal verification or an official government decision."
+            : "You may save job drafts while your accreditation is reviewed. Only a PESO  administrator can approve your company."}
         </Notice>
       </div>
       <div className="grid items-start gap-6 xl:grid-cols-[1.3fr_1fr]">
@@ -133,7 +133,7 @@ function AccreditationWorkspace({
                   ? "Update & resubmit requirements"
                   : "Prepare document metadata"
               }
-              description="Requirements are configurable by the PESO demo administrator."
+              description="Requirements are configurable by the PESO  administrator."
             >
               <FieldGroup>
                 {state.preferences.requirements.map((category) => (
@@ -160,7 +160,7 @@ function AccreditationWorkspace({
                   <ConfirmButton
                     variant="outline"
                     title="Submit accreditation for another review?"
-                    description="Your company will return to Pending Review. New publishing will be restricted until the PESO demo administrator approves it again."
+                    description="Your company will return to Pending Review. New publishing will be restricted until the PESO  administrator approves it again."
                     onConfirm={submit}
                   >
                     <Send data-icon="inline-start" />
@@ -171,12 +171,12 @@ function AccreditationWorkspace({
                     <Send data-icon="inline-start" />
                     {pending
                       ? "Submitting metadata…"
-                      : "Submit for demo review"}
+                      : "Submit for  review"}
                   </Button>
                 )}
                 <p className="text-[11px] leading-6 text-muted-foreground">
-                  No file contents are transmitted. Selecting a sample file
-                  records temporary metadata only. Existing sample metadata may
+                  No file contents are transmitted. Selecting a file
+                  records temporary metadata only. Existing metadata may
                   be reused for this workflow.
                 </p>
               </FieldGroup>
@@ -185,7 +185,7 @@ function AccreditationWorkspace({
         </div>
         <Panel
           title="Review history"
-          description="A transparent record of this sample accreditation."
+          description="A transparent record of this accreditation."
         >
           <ol className="flex flex-col gap-5">
             {[...accreditation.history].reverse().map((event, index) => (

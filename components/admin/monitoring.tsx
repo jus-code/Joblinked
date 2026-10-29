@@ -68,14 +68,14 @@ export function ApplicationMonitoring() {
     downloadCsv(
       "joblinked-DEMO-applications.csv",
       [
-        "Demo application ID",
+        " application ID",
         "Job title",
         "Employer",
         "Barangay",
         "Submitted",
         "Current status",
-        "Demo referral",
-        "Sample placement",
+        " referral",
+        "placement",
       ],
       records.map((a) => {
         const job = state.jobs.find((j) => j.id === a.jobId);
@@ -96,7 +96,7 @@ export function ApplicationMonitoring() {
       <PageHeading
         eyebrow="Follow every connection"
         title="From opportunity to a new beginning."
-        description="Monitor sample recruitment outcomes and record demo referral markers. No external referral is sent."
+        description="Monitor recruitment outcomes and record  referral markers. No external referral is sent."
         action={
           <Button
             variant="outline"
@@ -104,7 +104,7 @@ export function ApplicationMonitoring() {
             onClick={exportRecords}
           >
             <Download data-icon="inline-start" />
-            Export demo CSV
+            Export  CSV
           </Button>
         }
       />
@@ -121,7 +121,7 @@ export function ApplicationMonitoring() {
             icon: Handshake,
           },
           {
-            label: "Sample placements",
+            label: "placements",
             value: records.filter((a) => a.status === "Hired").length,
             icon: Users,
             tone: "teal",
@@ -137,7 +137,7 @@ export function ApplicationMonitoring() {
       />
       <Panel
         title="Applications & placements"
-        description="Placement means an application currently marked Hired. These are fictional outcomes."
+        description="Placement means an application currently marked Hired. These are provided outcomes."
       >
         <div className="mb-5 flex flex-col gap-3">
           <SearchInput
@@ -188,7 +188,7 @@ export function ApplicationMonitoring() {
                 <TableHead>Candidate & vacancy</TableHead>
                 <TableHead>Barangay</TableHead>
                 <TableHead>Outcome</TableHead>
-                <TableHead>Demo referral</TableHead>
+                <TableHead> referral</TableHead>
                 <TableHead>History</TableHead>
               </TableRow>
             </TableHeader>
@@ -218,7 +218,7 @@ export function ApplicationMonitoring() {
                         <StatusBadge status={a.status} />
                         {a.status === "Hired" && (
                           <p className="mt-2 text-[10px] text-teal">
-                            Sample placement recorded
+                            placement recorded
                           </p>
                         )}
                       </TableCell>
@@ -230,8 +230,8 @@ export function ApplicationMonitoring() {
                             run(
                               () => api.referApplication(a.id, !a.referred),
                               a.referred
-                                ? "Demo referral marker removed."
-                                : "Demo referral recorded; nothing was sent externally.",
+                                ? " referral marker removed."
+                                : " referral recorded; nothing was sent externally.",
                             )
                           }
                         >
@@ -274,7 +274,7 @@ export function ApplicationMonitoring() {
           {application && (
             <>
               <DialogHeader>
-                <DialogTitle>Sample recruitment history</DialogTitle>
+                <DialogTitle>recruitment history</DialogTitle>
                 <DialogDescription>
                   {
                     state.seekers.find((s) => s.id === application.seekerId)

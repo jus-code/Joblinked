@@ -70,11 +70,11 @@ export function AdminAccreditations() {
       <PageHeading
         eyebrow="Build trust in every opportunity"
         title="A thoughtful review, a stronger community."
-        description="Review sample employer accreditation, provide actionable feedback, and maintain a clear decision history."
+        description="Review employer accreditation, provide actionable feedback, and maintain a clear decision history."
       />
       <Panel
         title="Employer accreditation"
-        description="Pending submissions are shown first. All documents are fictional metadata records."
+        description="Pending submissions are shown first. All documents are provided metadata records."
       >
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <SearchInput
@@ -169,7 +169,7 @@ export function AdminAccreditations() {
         ) : (
           <EmptyState
             title="Your review queue is clear."
-            description="No sample employers match these filters."
+            description="No employers match these filters."
           />
         )}
         <ListPagination
@@ -227,7 +227,7 @@ function AccreditationReview({
     await run(async () => {
       await api.reviewAccreditation(employerId, status, reason);
       onClose();
-    }, `Sample accreditation updated to ${status}.`);
+    }, `accreditation updated to ${status}.`);
   };
   return (
     <>
@@ -317,7 +317,7 @@ function AccreditationReview({
         </Button>
       </div>
       <p className="text-[10px] leading-5 text-muted-foreground">
-        Demo decisions update employer access in this browser. No real
+         decisions update employer access in this browser. No real
         accreditation, external verification, or government action occurs.
       </p>
       <h3 className="mt-2 text-sm font-semibold">Review history</h3>
