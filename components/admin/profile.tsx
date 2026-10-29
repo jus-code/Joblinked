@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeading, Panel, TextField } from "@/components/shared";
 import { useDemo } from "@/hooks/use-demo";
 import { useAction } from "@/hooks/use-action";
+import { PasswordSettings } from "@/components/dashboard/password-settings";
 import { ROLE_LABELS } from "@/constants";
 import type { User } from "@/types";
 
@@ -79,6 +80,9 @@ function AdminProfileForm({ user }: { user: User }) {
             <dd className="break-all">{user.id}</dd>
           </dl>
         </Panel>
+      </div>
+      <div className="mt-6">
+        <PasswordSettings />
       </div>
     </>
   );
