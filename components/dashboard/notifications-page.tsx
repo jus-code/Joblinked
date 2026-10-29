@@ -17,6 +17,14 @@ import {
   EmptyState,
   SelectField,
 } from "@/components/shared";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { SearchInput } from "./list-controls";
 import { useDemo } from "@/hooks/use-demo";
 import { useAction } from "@/hooks/use-action";
@@ -29,6 +37,7 @@ export function NotificationsPage() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All notifications");
+  const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
   if (!user) return null;
   const own = state.notifications.filter((n) => n.userId === user.id);
   const unread = own.filter((n) => !n.read).length;
@@ -132,7 +141,7 @@ export function NotificationsPage() {
                       onClick={() =>
                         run(async () => {
                           await api.markNotification(n.id, true);
-                          router.push(n.href);
+                          setSelectedNotificationId(n.id);
                         })
                       }
                     >
@@ -160,6 +169,39 @@ export function NotificationsPage() {
           />
         )}
       </Panel>
+      <Dialog
+        open={Boolean(selectedNotificationId)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedNotificationId(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-lg">
+          {(() => {
+            const notification = own.find((item) => item.id === selectedNotificationId);
+            if (!notification) return null;
+            return (
+              <>
+                <DialogHeader>
+                  <DialogTitle>{notification.title}</DialogTitle>
+                  <DialogDescription>
+                    {formatDate(notification.date)}
+                  </DialogDescription>
+                </DialogHeader>
+                <p className="leading-7 text-muted-foreground">{notification.message}</p>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setSelectedNotificationId(null)}>
+                    Close
+                  </Button>
+                  <Button onClick={() => router.push(notification.href)}>
+                    View Page
+                    <ArrowUpRight data-icon="inline-end" />
+                  </Button>
+                </DialogFooter>
+              </>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
